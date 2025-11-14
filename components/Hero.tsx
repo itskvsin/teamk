@@ -1,24 +1,46 @@
 "use client";
 
+import React, { JSX, useEffect, useLayoutEffect, useRef } from "react";
 import Image from "next/image";
-import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 
-gsap.registerPlugin(useGSAP);
+export default function Hero(): JSX.Element {
+  const cursor = useRef<HTMLDivElement | null>(null);
+  const heroRef = useRef<HTMLDivElement | null>(null);
+  const imageContainerRef = useRef<HTMLDivElement | null>(null);
+  const backgroundRef = useRef<HTMLDivElement | null>(null);
 
-export default function Hero() {
-  const cursor = useRef(null);
-  const heroRef = useRef(null);
+  // Register GSAP plugin on client only
+  gsap.registerPlugin(ScrollTrigger);
+  
+  useLayoutEffect(() => {
+    if (typeof window === "undefined") return;
 
-  useGSAP(() => {
+    const cursorEl = cursor.current;
+    const heroEl = heroRef.current;
+    const imageContainerEl = imageContainerRef.current;
+    const backgroundEl = backgroundRef.current;
+
+    if (!cursorEl || !heroEl || !imageContainerEl || !backgroundEl) return;
+
+    // mousemove handler (throttled via rAF)
+    let rafId: number | null = null;
     const moveCursor = (e: MouseEvent) => {
-      gsap.to(cursor.current, {
-        x: e.clientX - 40, // Subtract half of cursor width (80px / 2)
-        y: e.clientY - 40, // Subtract half of cursor height (80px / 2)
-        duration: 0.3,
-        ease: "power2.out",
+      if (!cursorEl) return;
+      const targetX = e.clientX - 40;
+      const targetY = e.clientY - 40;
+
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        gsap.to(cursorEl, {
+          x: targetX,
+          y: targetY,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+        rafId = null;
       });
     };
 
@@ -28,7 +50,7 @@ export default function Hero() {
       const centerX = rect.left + rect.width / 2 - 40;
       const centerY = rect.top + rect.height / 2 - 40;
 
-      gsap.to(cursor.current, {
+      gsap.to(cursorEl, {
         x: centerX,
         y: centerY,
         scale: 2,
@@ -43,11 +65,10 @@ export default function Hero() {
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
-      // Magnetic effect - pull towards center with reduced strength
       const deltaX = (e.clientX - centerX) * 0.3;
       const deltaY = (e.clientY - centerY) * 0.3;
 
-      gsap.to(cursor.current, {
+      gsap.to(cursorEl, {
         x: centerX + deltaX - 40,
         y: centerY + deltaY - 40,
         duration: 0.2,
@@ -56,60 +77,113 @@ export default function Hero() {
     };
 
     const handleMouseLeave = () => {
-      gsap.to(cursor.current, {
+      gsap.to(cursorEl, {
         scale: 1,
         duration: 0.3,
         ease: "power2.out",
       });
     };
 
-    // Add global mouse move listener
+    // attach global mousemove
     window.addEventListener("mousemove", moveCursor);
 
-    // Add magnetic effect to interactive elements
-    const magneticElements = heroRef.current?.querySelectorAll(".magnetic");
-    magneticElements?.forEach((el) => {
+    // attach magnetic listeners to elements with .magnetic inside hero
+    const magneticElements = heroEl.querySelectorAll<HTMLElement>(".magnetic");
+    magneticElements.forEach((el) => {
       el.addEventListener("mouseenter", handleMouseEnter as EventListener);
       el.addEventListener("mousemove", handleMouseMove as EventListener);
       el.addEventListener("mouseleave", handleMouseLeave);
     });
 
+    // Scroll animation - image disappears and background takes over
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: heroEl,
+        start: "top top",
+        end: "bottom top",
+        scrub: 1,
+        pin: true,
+      },
+    });
+
+    tl.to(backgroundEl, {
+      scale: 50,
+      duration: 1,
+      ease: "power2.inOut",
+    }).to(
+      imageContainerEl,
+      {
+        scale: 0,
+        opacity: 0,
+        duration: 1,
+        ease: "power2.inOut",
+      },
+      0
+    );
+
+    // cleanup
     return () => {
       window.removeEventListener("mousemove", moveCursor);
-      magneticElements?.forEach((el) => {
+      magneticElements.forEach((el) => {
         el.removeEventListener("mouseenter", handleMouseEnter as EventListener);
         el.removeEventListener("mousemove", handleMouseMove as EventListener);
         el.removeEventListener("mouseleave", handleMouseLeave);
       });
+
+      // kill scroll triggers associated with this hero
+      try {
+        ScrollTrigger.getAll().forEach((st) => {
+          if (st.trigger === heroEl) st.kill();
+        });
+      } catch {
+        /* ignore */
+      }
+
+      // kill GSAP tweens on cursor
+      gsap.killTweensOf(cursorEl);
+      if (rafId) cancelAnimationFrame(rafId);
     };
+    // run once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div
       ref={heroRef}
-      className="h-screen flex flex-col items-center justify-center font-extrabold cursor-none"
+      className="h-screen flex flex-col items-center justify-center font-extrabold cursor-none relative overflow-hidden"
     >
-      {/* Magnetic Cursor */}
+      {/* white Background Takeover */}
+      <div
+        ref={backgroundRef}
+        className="absolute w-20 h-20 bg-[#f5f5f5] rounded-full pointer-events-none z-20"
+        style={{
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%) scale(0)",
+          willChange: "transform",
+        }}
+      />
+
       <div
         ref={cursor}
-        className="cursor h-10 w-10 bg-white rounded-full absolute pointer-events-none z-20 mix-blend-difference"
+        className="cursor h-10 w-10 bg-gray-300 rounded-full absolute pointer-events-none z-40 mix-blend-difference"
         style={{ left: 0, top: 0 }}
       ></div>
 
-      {/* Part1 */}
-      <div className="magnetic">
-        <p className="text-8xl text-center">We don't overthink</p>
+      <div className="relative z-10">
+        <p className="text-8xl text-center mix-blend-difference">
+          We don't overthink
+        </p>
       </div>
 
-      {/* image */}
-      <div className=" magnetic leading-none">
+      <div ref={imageContainerRef} className="leading-none relative z-10">
         <CardContainer className="inter-var">
-          <CardBody className=" relative group/card dark:hover:shadow-2xl items-center dark:bg-black w-auto h-auto rounded-xl">
+          <CardBody className="relative group/card dark:hover:shadow-2xl items-center dark:bg-black w-auto h-auto rounded-xl">
             <CardItem translateZ="150">
               <Image
                 src="/images/3dImage.png"
-                height={350}
-                width={350}
+                height={400}
+                width={400}
                 className="h-70 w-full object-cover rounded-xl group-hover/card:shadow-xl"
                 alt="thumbnail"
               />
@@ -118,13 +192,11 @@ export default function Hero() {
         </CardContainer>
       </div>
 
-      {/* Part2 */}
-      <div className="flex items-center justify-center text-8xl magnetic">
+      <div className="flex items-center justify-center mix-blend-exclusion text-8xl relative z-10">
         <p>We overdeliver.</p>
       </div>
 
-      {/* Black Lines */}
-      <div className="flex flex-col gap-6 w-full mt-8">
+      <div className="flex flex-col gap-6 w-full mt-8 relative z-10">
         <div className="h-0.5 bg-black w-full mb-2"></div>
         <div className="h-1 bg-black w-full mb-4"></div>
         <div className="h-5 bg-black w-full mb-6"></div>
