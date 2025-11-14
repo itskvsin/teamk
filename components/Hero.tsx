@@ -11,8 +11,12 @@ export default function Hero(): JSX.Element {
   const heroRef = useRef<HTMLDivElement | null>(null);
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
   const backgroundRef = useRef<HTMLDivElement | null>(null);
+  const blob1Ref = useRef<HTMLDivElement | null>(null);
+  const blob2Ref = useRef<HTMLDivElement | null>(null);
+  const blob3Ref = useRef<HTMLDivElement | null>(null);
+  const geometricRef = useRef<HTMLDivElement | null>(null);
+  const gradientRef = useRef<HTMLDivElement | null>(null);
 
-  // Register GSAP plugin on client only
   gsap.registerPlugin(ScrollTrigger);
   
   useLayoutEffect(() => {
@@ -22,10 +26,14 @@ export default function Hero(): JSX.Element {
     const heroEl = heroRef.current;
     const imageContainerEl = imageContainerRef.current;
     const backgroundEl = backgroundRef.current;
+    const blob1El = blob1Ref.current;
+    const blob2El = blob2Ref.current;
+    const blob3El = blob3Ref.current;
+    const geometricEl = geometricRef.current;
+    const gradientEl = gradientRef.current;
 
     if (!cursorEl || !heroEl || !imageContainerEl || !backgroundEl) return;
 
-    // mousemove handler (throttled via rAF)
     let rafId: number | null = null;
     const moveCursor = (e: MouseEvent) => {
       if (!cursorEl) return;
@@ -84,10 +92,8 @@ export default function Hero(): JSX.Element {
       });
     };
 
-    // attach global mousemove
     window.addEventListener("mousemove", moveCursor);
 
-    // attach magnetic listeners to elements with .magnetic inside hero
     const magneticElements = heroEl.querySelectorAll<HTMLElement>(".magnetic");
     magneticElements.forEach((el) => {
       el.addEventListener("mouseenter", handleMouseEnter as EventListener);
@@ -95,7 +101,6 @@ export default function Hero(): JSX.Element {
       el.addEventListener("mouseleave", handleMouseLeave);
     });
 
-    // Scroll animation - image disappears and background takes over
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: heroEl,
@@ -107,7 +112,7 @@ export default function Hero(): JSX.Element {
     });
 
     tl.to(backgroundEl, {
-      scale: 50,
+      scale: 30,
       duration: 1,
       ease: "power2.inOut",
     }).to(
@@ -121,7 +126,71 @@ export default function Hero(): JSX.Element {
       0
     );
 
-    // cleanup
+    if (blob1El) {
+      gsap.to(blob1El, {
+        y: -50,
+        x: 30,
+        scrollTrigger: {
+          trigger: heroEl,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+    }
+
+    if (blob2El) {
+      gsap.to(blob2El, {
+        y: 40,
+        x: -20,
+        scrollTrigger: {
+          trigger: heroEl,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+    }
+
+    if (blob3El) {
+      gsap.to(blob3El, {
+        y: -30,
+        x: -40,
+        scrollTrigger: {
+          trigger: heroEl,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+    }
+
+    if (geometricEl) {
+      gsap.to(geometricEl, {
+        rotation: 15,
+        scale: 1.1,
+        scrollTrigger: {
+          trigger: heroEl,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+    }
+
+    if (gradientEl) {
+      gsap.to(gradientEl, {
+        opacity: 0.6,
+        scale: 1.2,
+        scrollTrigger: {
+          trigger: heroEl,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+    }
+
     return () => {
       window.removeEventListener("mousemove", moveCursor);
       magneticElements.forEach((el) => {
@@ -130,7 +199,6 @@ export default function Hero(): JSX.Element {
         el.removeEventListener("mouseleave", handleMouseLeave);
       });
 
-      // kill scroll triggers associated with this hero
       try {
         ScrollTrigger.getAll().forEach((st) => {
           if (st.trigger === heroEl) st.kill();
@@ -139,12 +207,9 @@ export default function Hero(): JSX.Element {
         /* ignore */
       }
 
-      // kill GSAP tweens on cursor
       gsap.killTweensOf(cursorEl);
       if (rafId) cancelAnimationFrame(rafId);
     };
-    // run once on mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -152,7 +217,52 @@ export default function Hero(): JSX.Element {
       ref={heroRef}
       className="h-screen flex flex-col items-center justify-center font-extrabold cursor-none relative overflow-hidden"
     >
-      {/* white Background Takeover */}
+      <div
+        ref={gradientRef}
+        className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-purple-50/20 to-pink-50/30 pointer-events-none z-0"
+        style={{ willChange: "opacity, transform" }}
+      />
+
+      <div
+        ref={blob1Ref}
+        className="absolute w-96 h-96 bg-blue-200/20 rounded-full blur-3xl pointer-events-none z-0"
+        style={{
+          top: "10%",
+          left: "10%",
+          willChange: "transform",
+        }}
+      />
+
+      <div
+        ref={blob2Ref}
+        className="absolute w-80 h-80 bg-purple-200/20 rounded-full blur-3xl pointer-events-none z-0"
+        style={{
+          bottom: "15%",
+          right: "15%",
+          willChange: "transform",
+        }}
+      />
+
+      <div
+        ref={blob3Ref}
+        className="absolute w-72 h-72 bg-pink-200/20 rounded-full blur-3xl pointer-events-none z-0"
+        style={{
+          top: "50%",
+          right: "20%",
+          willChange: "transform",
+        }}
+      />
+
+      <div
+        ref={geometricRef}
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{ willChange: "transform" }}
+      >
+        <div className="absolute top-20 left-20 w-32 h-32 border-2 border-gray-300/20 rotate-45" />
+        <div className="absolute bottom-32 right-24 w-24 h-24 border-2 border-gray-300/20 rounded-full" />
+        <div className="absolute top-1/2 left-1/4 w-16 h-16 border-2 border-gray-300/20 rotate-12" />
+      </div>
+
       <div
         ref={backgroundRef}
         className="absolute w-20 h-20 bg-[#f5f5f5] rounded-full pointer-events-none z-20"
@@ -166,7 +276,7 @@ export default function Hero(): JSX.Element {
 
       <div
         ref={cursor}
-        className="cursor h-10 w-10 bg-gray-300 rounded-full absolute pointer-events-none z-40 mix-blend-difference"
+        className="cursor h-10 w-10 bg-gray-300 rounded-full absolute pointer-events-none z-15 mix-blend-difference"
         style={{ left: 0, top: 0 }}
       ></div>
 
