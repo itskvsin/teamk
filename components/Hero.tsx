@@ -1,10 +1,12 @@
 "use client";
 
-import React, { JSX, useEffect, useLayoutEffect, useRef } from "react";
+import { JSX, useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
+import { Spotlight } from '@/components/motion-primitives/spotlight';
+
 
 export default function Hero(): JSX.Element {
   const cursor = useRef<HTMLDivElement | null>(null);
@@ -112,8 +114,8 @@ export default function Hero(): JSX.Element {
     });
 
     tl.to(backgroundEl, {
-      scale: 30,
-      duration: 1,
+      scale:50,
+      duration: 0.8,
       ease: "power2.inOut",
     }).to(
       imageContainerEl,
@@ -217,6 +219,14 @@ export default function Hero(): JSX.Element {
       ref={heroRef}
       className="h-screen flex flex-col items-center justify-center font-extrabold cursor-none relative overflow-hidden"
     >
+      <Spotlight
+        className='bg-zinc-700 blur-2xl'
+        size={64}
+        springOptions={{
+          bounce: 0.3,
+          duration: 0.1,
+        }}
+      />
       <div
         ref={gradientRef}
         className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-purple-50/20 to-pink-50/30 pointer-events-none z-0"
@@ -265,7 +275,7 @@ export default function Hero(): JSX.Element {
 
       <div
         ref={backgroundRef}
-        className="absolute w-20 h-20 bg-[#f5f5f5] rounded-full pointer-events-none z-20"
+        className="absolute w-20 h-20 bg-[#f5f5f5] rounded-full pointer-events-none z-42"
         style={{
           left: "50%",
           top: "50%",
@@ -276,7 +286,7 @@ export default function Hero(): JSX.Element {
 
       <div
         ref={cursor}
-        className="cursor h-10 w-10 bg-gray-300 rounded-full absolute pointer-events-none z-15 mix-blend-difference"
+        className="cursor h-10 w-10 bg-gray-300 rounded-full absolute pointer-events-none z-41 mix-blend-difference"
         style={{ left: 0, top: 0 }}
       ></div>
 
@@ -286,15 +296,15 @@ export default function Hero(): JSX.Element {
         </p>
       </div>
 
-      <div ref={imageContainerRef} className="leading-none relative z-10">
+      <div ref={imageContainerRef} className="leading-none relative z-40">
         <CardContainer className="inter-var">
           <CardBody className="relative group/card dark:hover:shadow-2xl items-center dark:bg-black w-auto h-auto rounded-xl">
             <CardItem translateZ="150">
               <Image
-                src="/images/3dImage.png"
-                height={400}
-                width={400}
-                className="h-70 w-full object-cover rounded-xl group-hover/card:shadow-xl"
+                src="/images/duckBg-removebg-preview.png"
+                height={450}
+                width={450}
+                className="h-80 w-full object-cover rounded-xl "
                 alt="thumbnail"
               />
             </CardItem>
@@ -302,12 +312,12 @@ export default function Hero(): JSX.Element {
         </CardContainer>
       </div>
 
-      <div className="flex items-center justify-center mix-blend-exclusion text-8xl relative z-10">
-        <p>We overdeliver.</p>
+      <div className="flex text-black items-center justify-center  text-8xl relative z-10">
+        <p className="text-black"> We overdeliver.</p>
       </div>
 
       <div className="flex flex-col gap-6 w-full mt-8 relative z-10">
-        <div className="h-0.5 bg-black w-full mb-2"></div>
+        {/* <div className="h-0.5 bg-black w-full mb-2"></div> */}
         <div className="h-1 bg-black w-full mb-4"></div>
         <div className="h-5 bg-black w-full mb-6"></div>
         <div className="h-16 bg-black w-full"></div>
