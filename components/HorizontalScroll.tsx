@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import Card from "./Demo";
-import { easeInOut } from "motion";
+import Card from "./Card";
 
 export default function HorizontalScroll() {
   const data = [
@@ -14,48 +13,83 @@ export default function HorizontalScroll() {
     },
     {
       title: "Scripting And Storytelling",
-      content: "https://assets.aceternity.com/pro/hero-sections.png"
+      content: "https://assets.aceternity.com/pro/hero-sections.png",
     },
     {
       title: "Motion Design",
-      content: "https://assets.aceternity.com/pro/hero-sections.png"
+      content: "https://assets.aceternity.com/pro/hero-sections.png",
     },
     {
       title: "Web Design",
-      content: "https://assets.aceternity.com/pro/hero-sections.png"
+      content: "https://assets.aceternity.com/pro/hero-sections.png",
     },
     {
       title: "Organic Growth",
-      content: "https://assets.aceternity.com/pro/hero-sections.png"
+      content: "https://assets.aceternity.com/pro/hero-sections.png",
     },
     {
       title: "Social Media Marketing",
-      content: "https://assets.aceternity.com/pro/hero-sections.png"
+      content: "https://assets.aceternity.com/pro/hero-sections.png",
     },
     {
       title: "Content Strategy",
-      content: "https://assets.aceternity.com/pro/hero-sections.png"
+      content: "https://assets.aceternity.com/pro/hero-sections.png",
     },
   ];
+
   const sectionRef = useRef(null);
   const triggerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   gsap.registerPlugin(ScrollTrigger);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  useEffect(() => {
+    // Calculate translation based on screen size
+    const getTranslateX = () => {
+      if (window.innerWidth < 768) {
+        return "-400vw"; // Mobile
+      } else if (window.innerWidth < 1024) {
+        return "-400vw"; // Tablet
+      } else {
+        return "-400vw"; // Desktop
+      }
+    };
+
+    // Calculate scroll distance based on screen size
+    const getScrollEnd = () => {
+      if (window.innerWidth < 768) {
+        return "2500 top"; // Mobile
+      } else if (window.innerWidth < 1024) {
+        return "2200 top"; // Tablet
+      } else {
+        return "1900 top"; // Desktop
+      }
+    };
+
     const pin = gsap.fromTo(
       sectionRef.current,
       {
         translateX: 0,
       },
       {
-        translateX: "-240vw",
-        ease: easeInOut,
+        translateX: getTranslateX(),
+        ease: "none",
         duration: 1,
         scrollTrigger: {
           trigger: triggerRef.current,
           start: "top top",
-          end: "1900 top",
+          end: "2000 top",
           scrub: 0.6,
           pin: true,
         },
@@ -65,70 +99,35 @@ export default function HorizontalScroll() {
     return () => {
       pin.kill();
     };
-  }, []);
+  }, [isMobile]);
 
   return (
-    <section className="scroll-section-outer">
-      <div>
-        <p className="text-8xl font-bold text-center mb-8">Our Services</p>
-        <div className="flex items-center gap-10 justify-center">
-            <div className="bg-black h-1 w-1/4"></div><p className="text-3xl text-center">What We Do</p><div className="bg-black h-1 w-1/4"></div>
-        </div>
-      </div>
+    <section className="scroll-section-outer overflow-hidden">
       <div ref={triggerRef}>
-        <div ref={sectionRef} className="scroll-section-inner">
+        <div className="py-10 md:py-20 px-4">
+          <p className="text-4xl md:text-6xl lg:text-8xl font-bold text-center mb-4 md:mb-8">
+            Our Services
+          </p>
+          <div className="flex items-center gap-4 md:gap-10 justify-center px-4">
+            <div className="bg-black h-0.5 md:h-1 w-1/4"></div>
+            <p className="text-lg md:text-2xl lg:text-3xl text-center whitespace-nowrap">
+              What We Do
+            </p>
+            <div className="bg-black h-0.5 md:h-1 w-1/4"></div>
+          </div>
+        </div>
+        <div ref={sectionRef} className="flex scroll-section-inner">
           {data.map((item, index) => (
-            // <div
-            //   key={index}
-            //   className="flex flex-col items-center justify-center pt-10 md:pt-40 md:gap-10"
-            // >
-            //   <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
-            //     {/* <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center">
-            //       <div className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2" />
-            //     </div> */}
-            //     <h3 className="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-neutral-500 dark:text-neutral-500 ">
-            //       {item.title}
-            //     </h3>
-            //   </div>
-
-            //   <div className="relative pl-20 pr-4 md:pl-4 w-full">
-            //     <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-neutral-500 dark:text-neutral-500">
-            //       {item.title}
-            //     </h3>
-            //     {item.content}{" "}
-            //   </div>
-            // </div>
             <div
               key={index}
-              className="flex items-center justify-center h-screen w-full pr-10"
+              className="flex  justify-center h-screen w-screen flex-shrink-0 px-4 md:px-10"
             >
-              <Card title={item.title} content={item.content} />{" "}
+              <Card title={item.title} content={item.content} />
             </div>
           ))}
         </div>
       </div>
+      <div className="h-screen"></div>
     </section>
   );
-}
-
-//   <div className="scroll-section">
-{
-  /* <h3>{data.title}</h3> */
-}
-{
-  /* </div> */
-}
-//   <div className="scroll-section">
-{
-  /* <h3>Section 2</h3> */
-}
-{
-  /* </div> */
-}
-//   <div className="scroll-section">
-{
-  /* <h3>Section 3</h3> */
-}
-{
-  /* </div> */
 }

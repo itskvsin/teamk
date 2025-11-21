@@ -36,9 +36,12 @@ export default function Hero(): JSX.Element {
 
     if (!cursorEl || !heroEl || !imageContainerEl || !backgroundEl) return;
 
+    // Only enable custom cursor on desktop
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    
     let rafId: number | null = null;
     const moveCursor = (e: MouseEvent) => {
-      if (!cursorEl) return;
+      if (!cursorEl || isMobile) return;
       const targetX = e.clientX - 40;
       const targetY = e.clientY - 40;
 
@@ -55,6 +58,7 @@ export default function Hero(): JSX.Element {
     };
 
     const handleMouseEnter = (e: MouseEvent) => {
+      if (isMobile) return;
       const target = e.currentTarget as HTMLElement;
       const rect = target.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2 - 40;
@@ -70,6 +74,7 @@ export default function Hero(): JSX.Element {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
+      if (isMobile) return;
       const target = e.currentTarget as HTMLElement;
       const rect = target.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
@@ -87,6 +92,7 @@ export default function Hero(): JSX.Element {
     };
 
     const handleMouseLeave = () => {
+      if (isMobile) return;
       gsap.to(cursorEl, {
         scale: 1,
         duration: 0.3,
@@ -94,14 +100,18 @@ export default function Hero(): JSX.Element {
       });
     };
 
-    window.addEventListener("mousemove", moveCursor);
+    if (!isMobile) {
+      window.addEventListener("mousemove", moveCursor);
+    }
 
     const magneticElements = heroEl.querySelectorAll<HTMLElement>(".magnetic");
-    magneticElements.forEach((el) => {
-      el.addEventListener("mouseenter", handleMouseEnter as EventListener);
-      el.addEventListener("mousemove", handleMouseMove as EventListener);
-      el.addEventListener("mouseleave", handleMouseLeave);
-    });
+    if (!isMobile) {
+      magneticElements.forEach((el) => {
+        el.addEventListener("mouseenter", handleMouseEnter as EventListener);
+        el.addEventListener("mousemove", handleMouseMove as EventListener);
+        el.addEventListener("mouseleave", handleMouseLeave);
+      });
+    }
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -114,7 +124,7 @@ export default function Hero(): JSX.Element {
     });
 
     tl.to(backgroundEl, {
-      scale:50,
+      scale: 50,
       duration: 0.8,
       ease: "power2.inOut",
     }).to(
@@ -194,12 +204,14 @@ export default function Hero(): JSX.Element {
     }
 
     return () => {
-      window.removeEventListener("mousemove", moveCursor);
-      magneticElements.forEach((el) => {
-        el.removeEventListener("mouseenter", handleMouseEnter as EventListener);
-        el.removeEventListener("mousemove", handleMouseMove as EventListener);
-        el.removeEventListener("mouseleave", handleMouseLeave);
-      });
+      if (!isMobile) {
+        window.removeEventListener("mousemove", moveCursor);
+        magneticElements.forEach((el) => {
+          el.removeEventListener("mouseenter", handleMouseEnter as EventListener);
+          el.removeEventListener("mousemove", handleMouseMove as EventListener);
+          el.removeEventListener("mouseleave", handleMouseLeave);
+        });
+      }
 
       try {
         ScrollTrigger.getAll().forEach((st) => {
@@ -217,7 +229,7 @@ export default function Hero(): JSX.Element {
   return (
     <div
       ref={heroRef}
-      className="h-screen flex flex-col items-center justify-center font-extrabold cursor-none relative overflow-hidden"
+      className="h-screen flex flex-col items-center justify-center font-extrabold cursor-none md:cursor-none relative overflow-hidden md:px-0"
     >
       <Spotlight
         className='bg-zinc-700 blur-2xl'
@@ -235,30 +247,30 @@ export default function Hero(): JSX.Element {
 
       <div
         ref={blob1Ref}
-        className="absolute w-96 h-96 bg-blue-200/20 rounded-full blur-3xl pointer-events-none z-0"
+        className="absolute w-48 h-48 md:w-96 md:h-96 bg-blue-200/20 rounded-full blur-3xl pointer-events-none z-0"
         style={{
           top: "10%",
-          left: "10%",
+          left: "5%",
           willChange: "transform",
         }}
       />
 
       <div
         ref={blob2Ref}
-        className="absolute w-80 h-80 bg-purple-200/20 rounded-full blur-3xl pointer-events-none z-0"
+        className="absolute w-40 h-40 md:w-80 md:h-80 bg-purple-200/20 rounded-full blur-3xl pointer-events-none z-0"
         style={{
           bottom: "15%",
-          right: "15%",
+          right: "10%",
           willChange: "transform",
         }}
       />
 
       <div
         ref={blob3Ref}
-        className="absolute w-72 h-72 bg-pink-200/20 rounded-full blur-3xl pointer-events-none z-0"
+        className="absolute w-36 h-36 md:w-72 md:h-72 bg-pink-200/20 rounded-full blur-3xl pointer-events-none z-0"
         style={{
           top: "50%",
-          right: "20%",
+          right: "15%",
           willChange: "transform",
         }}
       />
@@ -268,9 +280,9 @@ export default function Hero(): JSX.Element {
         className="absolute inset-0 pointer-events-none z-0"
         style={{ willChange: "transform" }}
       >
-        <div className="absolute top-20 left-20 w-32 h-32 border-2 border-gray-300/20 rotate-45" />
-        <div className="absolute bottom-32 right-24 w-24 h-24 border-2 border-gray-300/20 rounded-full" />
-        <div className="absolute top-1/2 left-1/4 w-16 h-16 border-2 border-gray-300/20 rotate-12" />
+        <div className="absolute top-10 left-5 md:top-20 md:left-20 w-16 h-16 md:w-32 md:h-32 border-2 border-gray-300/20 rotate-45" />
+        <div className="absolute bottom-16 right-8 md:bottom-32 md:right-24 w-12 h-12 md:w-24 md:h-24 border-2 border-gray-300/20 rounded-full" />
+        <div className="absolute top-1/2 left-1/4 w-8 h-8 md:w-16 md:h-16 border-2 border-gray-300/20 rotate-12" />
       </div>
 
       <div
@@ -286,12 +298,12 @@ export default function Hero(): JSX.Element {
 
       <div
         ref={cursor}
-        className="cursor h-10 w-10 bg-gray-300 rounded-full absolute pointer-events-none z-41 mix-blend-difference"
+        className="hidden md:block cursor h-10 w-10 bg-gray-300 rounded-full absolute pointer-events-none z-41 mix-blend-difference"
         style={{ left: 0, top: 0 }}
       ></div>
 
       <div className="relative z-10">
-        <p className="text-8xl text-center mix-blend-difference">
+        <p className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl text-center mix-blend-difference px-4">
           We don't overthink
         </p>
       </div>
@@ -304,7 +316,7 @@ export default function Hero(): JSX.Element {
                 src="/images/duckBg-removebg-preview.png"
                 height={450}
                 width={450}
-                className="h-80 w-full object-cover rounded-xl "
+                className="h-50 w-50 sm:h-62 sm:w-62 md:h-64 md:w-64 lg:h-80 lg:w-80 object-cover rounded-xl"
                 alt="thumbnail"
               />
             </CardItem>
@@ -312,15 +324,14 @@ export default function Hero(): JSX.Element {
         </CardContainer>
       </div>
 
-      <div className="flex text-black items-center justify-center  text-8xl relative z-10">
-        <p className="text-black"> We overdeliver.</p>
+      <div className="flex text-black items-center justify-center text-3xl sm:text-4xl md:text-6xl lg:text-8xl relative z-10 px-4">
+        <p className="text-black text-center">We overdeliver.</p>
       </div>
 
-      <div className="flex flex-col gap-6 w-full mt-8 relative z-10">
-        {/* <div className="h-0.5 bg-black w-full mb-2"></div> */}
-        <div className="h-1 bg-black w-full mb-4"></div>
-        <div className="h-5 bg-black w-full mb-6"></div>
-        <div className="h-16 bg-black w-full"></div>
+      <div className="flex flex-col gap-3 md:gap-6 w-full mt-4 md:mt-8 relative z-10 px-4">
+        <div className="h-0.5 md:h-1 bg-black w-full mb-1 md:mb-4"></div>
+        <div className="h-2 md:h-5 bg-black w-full mb-2 md:mb-6"></div>
+        <div className="h-8 md:h-16 bg-black w-full"></div>
       </div>
     </div>
   );
