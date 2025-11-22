@@ -5,7 +5,6 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
-import { Spotlight } from '@/components/motion-primitives/spotlight';
 
 
 export default function Hero(): JSX.Element {
@@ -231,14 +230,6 @@ export default function Hero(): JSX.Element {
       ref={heroRef}
       className="h-screen flex flex-col items-center justify-center font-extrabold cursor-none md:cursor-none relative overflow-hidden md:px-0"
     >
-      <Spotlight
-        className='bg-zinc-700 blur-2xl'
-        size={64}
-        springOptions={{
-          bounce: 0.3,
-          duration: 0.1,
-        }}
-      />
       <div
         ref={gradientRef}
         className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-purple-50/20 to-pink-50/30 pointer-events-none z-0"
@@ -287,7 +278,7 @@ export default function Hero(): JSX.Element {
 
       <div
         ref={backgroundRef}
-        className="absolute w-20 h-20 bg-[#f5f5f5] rounded-full pointer-events-none z-42"
+        className="absolute w-20 h-20 bg-[#f5f5f5] hover:invert rounded-full pointer-events-none z-42"
         style={{
           left: "50%",
           top: "50%",
