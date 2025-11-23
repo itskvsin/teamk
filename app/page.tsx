@@ -2,16 +2,18 @@ import Hero from "@/components/Hero";
 import PageLoader from "@/components/Render";
 import Renderer from "@/components/Render";
 import Services from "@/components/Services";
+import Testimonials  from "@/components/Testimonials";
 // import HorizontalScroll from "@/components/HorizontalScroll";
 // import Card from "@/components/Card";
 
 export default function Home() {
   return (
     <>
-      <PageLoader>
+      {/* <PageLoader> */}
         <Hero />
         <Services />
-      </PageLoader>
+        <Testimonials />
+      {/* </PageLoader> */}
     </>
   );
 }

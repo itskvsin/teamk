@@ -311,7 +311,7 @@ export default function Hero(): JSX.Element {
         <div className="absolute top-1/2 left-1/4 w-8 h-8 md:w-16 md:h-16 border-2 border-gray-300/20 rotate-12" />
       </div>
 
-      {/* <div
+      <div
         ref={backgroundRef}
         className="absolute w-20 h-20 bg-[#f5f5f5] hover:invert rounded-full  z-42"
         style={{
@@ -320,7 +320,7 @@ export default function Hero(): JSX.Element {
           transform: "translate(-50%, -50%) scale(0)",
           willChange: "transform",
         }}
-      /> */}
+      />
 
       <div
         ref={cursor}

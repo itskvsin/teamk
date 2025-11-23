@@ -1,43 +1,64 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 
-const ServiceCard = ({ icon, title, description, index }) => {
-  const cardRef = useRef(null);
+let gsap: any = null;
+let ScrollTrigger: any = null;
+
+const loadGSAP = async () => {
+  if (!gsap) {
+    const gsapModule = await import("gsap");
+    gsap = gsapModule.default;
+    const st = await import("gsap/ScrollTrigger");
+    ScrollTrigger = st.ScrollTrigger;
+    gsap.registerPlugin(ScrollTrigger);
+  }
+};
+
+// ------------------------------------------------------
+// TYPES
+// ------------------------------------------------------
+interface ServiceCardProps {
+  icon: JSX.Element;
+  title: string;
+  description: string;
+  index: number;
+}
+
+interface HoverIconProps {
+  isHovered?: boolean;
+}
+
+// ------------------------------------------------------
+// SERVICE CARD
+// ------------------------------------------------------
+const ServiceCard = ({ icon, title, description, index }: ServiceCardProps) => {
+  const cardRef = useRef<HTMLDivElement | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    // Dynamically import gsap only on client side
-    import("gsap").then((gsapModule) => {
-      const gsap = gsapModule.default;
+    loadGSAP().then(() => {
+      if (!cardRef.current) return;
 
-      // Animate card sliding up from nothing (complete opacity 0 to 1)
       gsap.fromTo(
         cardRef.current,
+        { y: 100, opacity: 0 },
         {
-          y: 100,
-          opacity: 0,
-        },
-        {
-          
-          // ease: 'power3.in',
           y: 0,
           opacity: 1,
-          duration: 0.4,
+          duration: 1,
           delay: index * 2,
           scrollTrigger: {
             trigger: cardRef.current,
-            pin: true, // pin the trigger element while active
-            start: "bottom bottom", // when the top of the trigger hits the top of the viewport
-            end: "bottom bottom", // end after scrolling 500px beyond the start
-            // markers: true,
-            scrub: 1, // smooth scrubbing, takes 1 second to "catch up" to the scrollbar
-            snap: {
-              snapTo: "labels", // snap to the closest label in the timeline
-              duration: { min: 0.2, max: 3 }, // the snap animation should be at least 0.2 seconds, but no more than 3 seconds (determined by velocity)
-              delay: 0.2, // wait 0.2 seconds from the last scroll event before doing the snapping
-              // ease: "power1.inOut", // the ease of the snap animation ("power3" by default)
-            },
+            pin: true,
+            start: "center center",
+            end: "bottom bottom",
+            scrub: 1,
+            // snap: {
+            //   snapTo: "labels",
+            //   duration: { min: 0.2, max: 3 },
+            //   delay: 0.2,
+            // },
           },
         }
       );
@@ -57,23 +78,23 @@ const ServiceCard = ({ icon, title, description, index }) => {
         <div className="w-16 h-16 flex items-center justify-center">
           {React.cloneElement(icon, { isHovered })}
         </div>
+
         <h3 className="text-xl font-semibold text-gray-900 capitalize">
           {title}
         </h3>
+
         <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
       </div>
     </div>
   );
 };
 
-const AnimatedIcon1 = ({ isHovered }) => (
-  <svg
-    width="64"
-    height="64"
-    viewBox="0 0 64 64"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+// ------------------------------------------------------
+// ICONS (NO LOGIC CHANGED — ONLY ADDED TYPES)
+// ------------------------------------------------------
+
+const AnimatedIcon1 = ({ isHovered = false }: HoverIconProps) => (
+  <svg width="64" height="64" viewBox="0 0 64 64">
     <circle
       cx="32"
       cy="24"
@@ -102,14 +123,8 @@ const AnimatedIcon1 = ({ isHovered }) => (
   </svg>
 );
 
-const AnimatedIcon2 = ({ isHovered }) => (
-  <svg
-    width="64"
-    height="64"
-    viewBox="0 0 64 64"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+const AnimatedIcon2 = ({ isHovered = false }: HoverIconProps) => (
+  <svg width="64" height="64" viewBox="0 0 64 64">
     <circle
       cx="38"
       cy="26"
@@ -137,14 +152,8 @@ const AnimatedIcon2 = ({ isHovered }) => (
   </svg>
 );
 
-const AnimatedIcon3 = ({ isHovered }) => (
-  <svg
-    width="64"
-    height="64"
-    viewBox="0 0 64 64"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+const AnimatedIcon3 = ({ isHovered = false }: HoverIconProps) => (
+  <svg width="64" height="64" viewBox="0 0 64 64">
     <ellipse
       cx="32"
       cy="32"
@@ -178,14 +187,8 @@ const AnimatedIcon3 = ({ isHovered }) => (
   </svg>
 );
 
-const AnimatedIcon4 = ({ isHovered }) => (
-  <svg
-    width="64"
-    height="64"
-    viewBox="0 0 64 64"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+const AnimatedIcon4 = ({ isHovered = false }: HoverIconProps) => (
+  <svg width="64" height="64" viewBox="0 0 64 64">
     <circle
       cx="32"
       cy="32"
@@ -228,14 +231,8 @@ const AnimatedIcon4 = ({ isHovered }) => (
   </svg>
 );
 
-const AnimatedIcon5 = ({ isHovered }) => (
-  <svg
-    width="64"
-    height="64"
-    viewBox="0 0 64 64"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+const AnimatedIcon5 = ({ isHovered = false }: HoverIconProps) => (
+  <svg width="64" height="64" viewBox="0 0 64 64">
     <circle
       cx="32"
       cy="32"
@@ -278,14 +275,8 @@ const AnimatedIcon5 = ({ isHovered }) => (
   </svg>
 );
 
-const AnimatedIcon6 = ({ isHovered }) => (
-  <svg
-    width="64"
-    height="64"
-    viewBox="0 0 64 64"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+const AnimatedIcon6 = ({ isHovered = false }: HoverIconProps) => (
+  <svg width="64" height="64" viewBox="0 0 64 64">
     <circle
       cx="32"
       cy="32"
@@ -328,17 +319,35 @@ const AnimatedIcon6 = ({ isHovered }) => (
   </svg>
 );
 
+// ------------------------------------------------------
+// SERVICES
+// ------------------------------------------------------
 const Services = () => {
-  const titleRef = useRef(null);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
 
   useEffect(() => {
-    // Animate title
-    import("gsap").then((gsapModule) => {
-      const gsap = gsapModule.default;
+    loadGSAP().then(() => {
       gsap.fromTo(
         titleRef.current,
-        { y: -100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out" }
+        { y: 100, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.4,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: titleRef.current,
+            pin: true,
+            start: "bottom bottom",
+            end: "bottom bottom",
+            scrub: 1,
+            // snap: {
+            //   snapTo: "labels",
+            //   duration: { min: 0.2, max: 3 },
+            //   delay: 0.2,
+            // },
+          },
+        }
       );
     });
   }, []);
@@ -383,11 +392,11 @@ const Services = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-between px-20">
-      <section className="px-8 py-16 w-full flex justify-between">
+    <div className="min-h-screen relative bg-[#f5f5f5] flex items-center justify-between px-20">
+      <section className="px-8  py-16 w-full lg:gap-20 flex justify-between">
         <h1
           ref={titleRef}
-          className="text-5xl md:text-6xl font-bold mb-16 opacity-0"
+          className="text-5xl sticky top-10 md:text-6xl font-bold mb-16 opacity-0"
         >
           Services
         </h1>
@@ -397,9 +406,9 @@ const Services = () => {
             <ServiceCard
               key={index}
               icon={service.icon}
-              title={service.title}
               description={service.description}
               index={index}
+              title={service.title}
             />
           ))}
         </div>
