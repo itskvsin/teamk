@@ -15,8 +15,8 @@ export default function PageLoader({
   // Image cycle
   const images = [
     "/images/3dImage.png",
-    "/images/duckBg-removebg-preview.png",
-    "/images/duckBg.jpg",
+    "/images/image_(2).png",
+    "/images/image__2_-removebg-preview.png",
   ];
   const [currentImage, setCurrentImage] = useState(0);
 

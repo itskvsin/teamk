@@ -329,7 +329,7 @@ export default function Hero(): JSX.Element {
       ></div>
 
       <div className="relative z-10">
-        <p className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-center mix-blend-difference px-4">
+        <p className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl mb-10 text-center mix-blend-difference px-4">
           We don't overthink
         </p>
       </div>
@@ -343,7 +343,7 @@ export default function Hero(): JSX.Element {
         </Canvas>
       </div>
 
-      <div className="flex text-black items-center justify-center text-3xl sm:text-4xl md:text-6xl lg:text-7xl relative z-10 px-4">
+      <div className="flex text-black items-center justify-center mt-10 text-3xl sm:text-4xl md:text-6xl lg:text-7xl relative z-10 px-4">
         <p className="text-black text-center">We overdeliver.</p>
       </div>
     </div>

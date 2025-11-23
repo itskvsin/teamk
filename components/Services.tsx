@@ -24,13 +24,13 @@ const ServiceCard = ({ icon, title, description, index }) => {
           y: 0,
           opacity: 1,
           duration: 0.4,
-          delay: index * 0.2,
+          delay: index * 2,
           scrollTrigger: {
             trigger: cardRef.current,
             pin: true, // pin the trigger element while active
             start: "bottom bottom", // when the top of the trigger hits the top of the viewport
             end: "bottom bottom", // end after scrolling 500px beyond the start
-            markers: true,
+            // markers: true,
             scrub: 1, // smooth scrubbing, takes 1 second to "catch up" to the scrollbar
             snap: {
               snapTo: "labels", // snap to the closest label in the timeline
