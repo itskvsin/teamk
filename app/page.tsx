@@ -1,16 +1,18 @@
-import Hero from "@/components/Hero";
-import Services from "@/components/Services";
-import Testimonials  from "@/components/Testimonials";
-import Work from "@/components/Work";
+// import Hero from "@/components/Hero";
+import Navbar from "@/components/Navbar";
+// import Services from "@/components/Services";
+// import Testimonials  from "@/components/Testimonials";
+// import Work from "@/components/Work";
 
 export default function Home() {
   return (
     <>
       {/* <PageLoader> */}
-        <Hero />
+      <Navbar />
+        {/* <Hero />
         <Services />
         <Testimonials />
-        <Work />
+        <Work /> */}
       {/* </PageLoader> */}
     </>
   );

@@ -8,6 +8,7 @@ import React, {
   MouseEvent,
   TouchEvent,
 } from "react";
+import { testimonialsData } from "@/data/Testimonials";
 
 interface Testimonial {
   id: number;
@@ -17,56 +18,56 @@ interface Testimonial {
   avatar: string;
 }
 
-const testimonials: Testimonial[] = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    role: "CEO, TechStart",
-    content:
-      "This service transformed our business completely. The attention to detail and professional approach exceeded all expectations.",
-    avatar: "SJ",
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    role: "Designer, Creative Co",
-    content:
-      "Outstanding work! The team delivered exactly what we needed, on time and within budget.",
-    avatar: "MC",
-  },
-  {
-    id: 3,
-    name: "Emily Rodriguez",
-    role: "Marketing Director",
-    content:
-      "Incredible results! Our engagement increased by 300% after implementing their solutions.",
-    avatar: "ER",
-  },
-  {
-    id: 4,
-    name: "David Kim",
-    role: "Founder, StartupX",
-    content:
-      "Professional, creative, and reliable. They took our vision and made it better than we imagined.",
-    avatar: "DK",
-  },
-  {
-    id: 5,
-    name: "Lisa Anderson",
-    role: "Product Manager",
-    content:
-      "The best investment we made this year. The ROI has been phenomenal and the support is outstanding.",
-    avatar: "LA",
-  },
-  {
-    id: 6,
-    name: "James Wilson",
-    role: "CTO, InnovateLabs",
-    content:
-      "Technical excellence combined with creative vision. They understand both the art and science.",
-    avatar: "JW",
-  },
-];
+// const testimonials: Testimonial[] = [
+//   {
+//     id: 1,
+//     name: "Sarah Johnson",
+//     role: "CEO, TechStart",
+//     content:
+//       "This service transformed our business completely. The attention to detail and professional approach exceeded all expectations.",
+//     avatar: "SJ",
+//   },
+//   {
+//     id: 2,
+//     name: "Michael Chen",
+//     role: "Designer, Creative Co",
+//     content:
+//       "Outstanding work! The team delivered exactly what we needed, on time and within budget.",
+//     avatar: "MC",
+//   },
+//   {
+//     id: 3,
+//     name: "Emily Rodriguez",
+//     role: "Marketing Director",
+//     content:
+//       "Incredible results! Our engagement increased by 300% after implementing their solutions.",
+//     avatar: "ER",
+//   },
+//   {
+//     id: 4,
+//     name: "David Kim",
+//     role: "Founder, StartupX",
+//     content:
+//       "Professional, creative, and reliable. They took our vision and made it better than we imagined.",
+//     avatar: "DK",
+//   },
+//   {
+//     id: 5,
+//     name: "Lisa Anderson",
+//     role: "Product Manager",
+//     content:
+//       "The best investment we made this year. The ROI has been phenomenal and the support is outstanding.",
+//     avatar: "LA",
+//   },
+//   {
+//     id: 6,
+//     name: "James Wilson",
+//     role: "CTO, InnovateLabs",
+//     content:
+//       "Technical excellence combined with creative vision. They understand both the art and science.",
+//     avatar: "JW",
+//   },
+// ];
 
 export default function DraggableTestimonials() {
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -80,10 +81,10 @@ export default function DraggableTestimonials() {
   const autoScrollRef = useRef<number | null>(null);
 
   const extendedTestimonials = [
-    ...testimonials,
-    ...testimonials,
-    ...testimonials,
-    ...testimonials,
+    ...testimonialsData,
+    ...testimonialsData,
+    ...testimonialsData,
+    ...testimonialsData,
   ];
 
   // Auto-scroll when not dragging
@@ -239,20 +240,24 @@ export default function DraggableTestimonials() {
             {extendedTestimonials.map((testimonial, index) => (
               <div
                 key={`${testimonial.id}-${index}`}
-                className="flex-shrink-0 flex w-2/4 h-80 bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-200"
+                className="shrink-0 flex w-2/4 h-[50vh] bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-200"
                 style={{ userSelect: "none" }}
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-2/4 h-full rounded-lg bg-[url('/images/3dImage.png')] bg-center bg-cover flex items-center justify-center text-white font-semibold text-lg"></div>
+                  <div
+                    className={`w-2/4 h-full rounded-lg bg-no-repeat bg-top bg-cover flex items-center justify-center text-white font-semibold text-lg`}
+                    style={{ backgroundImage: `url(${testimonial.image})` }}
+                  ></div>
 
                   <div className="w-2/4 flex flex-col gap-4">
                     <div>
                       <h3 className="text-black font-semibold text-lg">
-                        {testimonial.name}
+                        {testimonial.client}
                       </h3>
                       <p className="text-gray-600 text-sm">
-                        {testimonial.role}
+                        {testimonial.title}
                       </p>
+                      {/* {console.log(testimonial.image)} */}
                     </div>
 
                     <p className="text-gray-700 leading-relaxed text-base">
