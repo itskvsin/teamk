@@ -5,7 +5,10 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
-
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import {Particle_effect} from "@/components/Particle_effect"
+import { Wrapper_Particle_Effect } from "./Wrapper_Particle_Effect";
 
 export default function Hero(): JSX.Element {
   const cursor = useRef<HTMLDivElement | null>(null);
@@ -17,9 +20,11 @@ export default function Hero(): JSX.Element {
   const blob3Ref = useRef<HTMLDivElement | null>(null);
   const geometricRef = useRef<HTMLDivElement | null>(null);
   const gradientRef = useRef<HTMLDivElement | null>(null);
+  const canvasContainer = useRef<HTMLDivElement | null>(null);
+
 
   gsap.registerPlugin(ScrollTrigger);
-  
+
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -37,21 +42,48 @@ export default function Hero(): JSX.Element {
 
     // Only enable custom cursor on desktop
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    
+
     let rafId: number | null = null;
     const moveCursor = (e: MouseEvent) => {
       if (!cursorEl || isMobile) return;
-      const targetX = e.clientX - 40;
-      const targetY = e.clientY - 40;
 
+      const targetX = e.clientX - 12;
+      const targetY = e.clientY - 12;
+
+      // --- sponge/squeeze effect based on velocity ---
+      const dx = e.clientX - (cursorEl as any)._lastX || 0;
+      const dy = e.clientY - (cursorEl as any)._lastY || 0;
+
+      (cursorEl as any)._lastX = e.clientX;
+      (cursorEl as any)._lastY = e.clientY;
+
+      const velocity = Math.min(Math.sqrt(dx * dx + dy * dy) / 80, 1);
+
+      const squeezeX = 1 + velocity * 0.85;
+      const squeezeY = 1 - velocity * 0.55;
+
+      // prevent RAF spam
       if (rafId) return;
+
       rafId = requestAnimationFrame(() => {
         gsap.to(cursorEl, {
           x: targetX,
           y: targetY,
-          duration: 0.3,
-          ease: "power2.out",
+          scaleX: squeezeX,
+          scaleY: squeezeY,
+          duration: 0.2,
+          ease: "power3.out",
         });
+
+        // snap back to normal
+        gsap.to(cursorEl, {
+          scaleX: 1,
+          scaleY: 1,
+          duration: 0.35,
+          delay: 0.05,
+          ease: "elastic.out(1, 0.4)",
+        });
+
         rafId = null;
       });
     };
@@ -60,8 +92,8 @@ export default function Hero(): JSX.Element {
       if (isMobile) return;
       const target = e.currentTarget as HTMLElement;
       const rect = target.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2 - 40;
-      const centerY = rect.top + rect.height / 2 - 40;
+      const centerX = rect.left + rect.width / 1 - 10;
+      const centerY = rect.top + rect.height / 1 - 10;
 
       gsap.to(cursorEl, {
         x: centerX,
@@ -76,16 +108,16 @@ export default function Hero(): JSX.Element {
       if (isMobile) return;
       const target = e.currentTarget as HTMLElement;
       const rect = target.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+      const centerX = rect.left + rect.width / 1;
+      const centerY = rect.top + rect.height / 1;
 
-      const deltaX = (e.clientX - centerX) * 0.3;
-      const deltaY = (e.clientY - centerY) * 0.3;
+      const deltaX = (e.clientX - centerX) * 0;
+      const deltaY = (e.clientY - centerY) * 0;
 
       gsap.to(cursorEl, {
-        x: centerX + deltaX - 40,
-        y: centerY + deltaY - 40,
-        duration: 0.2,
+        x: centerX + deltaX - 10,
+        y: centerY + deltaY - 10,
+        duration: 0.4,
         ease: "power2.out",
       });
     };
@@ -206,7 +238,10 @@ export default function Hero(): JSX.Element {
       if (!isMobile) {
         window.removeEventListener("mousemove", moveCursor);
         magneticElements.forEach((el) => {
-          el.removeEventListener("mouseenter", handleMouseEnter as EventListener);
+          el.removeEventListener(
+            "mouseenter",
+            handleMouseEnter as EventListener
+          );
           el.removeEventListener("mousemove", handleMouseMove as EventListener);
           el.removeEventListener("mouseleave", handleMouseLeave);
         });
@@ -228,7 +263,7 @@ export default function Hero(): JSX.Element {
   return (
     <div
       ref={heroRef}
-      className="h-screen flex flex-col items-center justify-center font-extrabold cursor-none md:cursor-none relative overflow-hidden md:px-0"
+      className="h-screen uppercase flex flex-col items-center justify-center font-extrabold  relative overflow-hidden md:px-0"
     >
       <div
         ref={gradientRef}
@@ -268,7 +303,7 @@ export default function Hero(): JSX.Element {
 
       <div
         ref={geometricRef}
-        className="absolute inset-0 pointer-events-none z-0"
+        className="absolute inset-0  z-0"
         style={{ willChange: "transform" }}
       >
         <div className="absolute top-10 left-5 md:top-20 md:left-20 w-16 h-16 md:w-32 md:h-32 border-2 border-gray-300/20 rotate-45" />
@@ -276,54 +311,55 @@ export default function Hero(): JSX.Element {
         <div className="absolute top-1/2 left-1/4 w-8 h-8 md:w-16 md:h-16 border-2 border-gray-300/20 rotate-12" />
       </div>
 
-      <div
+      {/* <div
         ref={backgroundRef}
-        className="absolute w-20 h-20 bg-[#f5f5f5] hover:invert rounded-full pointer-events-none z-42"
+        className="absolute w-20 h-20 bg-[#f5f5f5] hover:invert rounded-full  z-42"
         style={{
           left: "50%",
           top: "50%",
           transform: "translate(-50%, -50%) scale(0)",
           willChange: "transform",
         }}
-      />
+      /> */}
 
       <div
         ref={cursor}
-        className="hidden md:block cursor h-10 w-10 bg-gray-300 rounded-full absolute pointer-events-none z-41 mix-blend-difference"
+        className="hidden md:block cursor h-6 w-6 bg-gray-300 rounded-full absolute  z-100 mix-blend-exclusion"
         style={{ left: 0, top: 0 }}
       ></div>
 
       <div className="relative z-10">
-        <p className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl text-center mix-blend-difference px-4">
+        <p className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-center mix-blend-difference px-4">
           We don't overthink
         </p>
       </div>
 
-      <div ref={imageContainerRef} className="leading-none relative z-40">
-        <CardContainer className="inter-var">
-          <CardBody className="relative group/card dark:hover:shadow-2xl items-center dark:bg-black w-auto h-auto rounded-xl">
-            <CardItem translateZ="150">
-              <Image
-                src="/images/duckBg-removebg-preview.png"
-                height={450}
-                width={450}
-                className="h-50 w-50 sm:h-62 sm:w-62 md:h-64 md:w-64 lg:h-80 lg:w-80 object-cover rounded-xl"
-                alt="thumbnail"
-              />
-            </CardItem>
-          </CardBody>
-        </CardContainer>
+      <div ref={imageContainerRef} className="leading-none h-80 w-100 relative z-40">
+        <Canvas className="flex items-center justify-center bg-black">
+          <ambientLight intensity={10} />
+          <directionalLight position={[20, 20, 10]} intensity={100} />
+          <OrbitControls enableDamping enableZoom />
+          <Particle_effect />
+        </Canvas>
       </div>
 
-      <div className="flex text-black items-center justify-center text-3xl sm:text-4xl md:text-6xl lg:text-8xl relative z-10 px-4">
+      <div className="flex text-black items-center justify-center text-3xl sm:text-4xl md:text-6xl lg:text-7xl relative z-10 px-4">
         <p className="text-black text-center">We overdeliver.</p>
-      </div>
-
-      <div className="flex flex-col gap-3 md:gap-6 w-full mt-4 md:mt-8 relative z-10 px-4">
-        <div className="h-0.5 md:h-1 bg-black w-full mb-1 md:mb-4"></div>
-        <div className="h-2 md:h-5 bg-black w-full mb-2 md:mb-6"></div>
-        <div className="h-8 md:h-16 bg-black w-full"></div>
       </div>
     </div>
   );
 }
+
+// <CardContainer className="inter-var">
+//   <CardBody className="relative group/card dark:hover:shadow-2xl items-center dark:bg-black w-auto h-auto rounded-xl">
+//     <CardItem translateZ="150">
+//       <Image
+//         src="/images/image__2_-removebg-preview.png"
+//         height={600}
+//         width={600}
+//         className="h-50 w-50 sm:h-62 sm:w-62 md:h-64 md:w-64 lg:h-80 lg:w-80 object-contain rounded-xl"
+//         alt="thumbnail"
+//       />
+//     </CardItem>
+//   </CardBody>
+// </CardContainer>
