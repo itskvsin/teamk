@@ -4,7 +4,7 @@ import { JSX, useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
+// import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import {Particle_effect} from "@/components/Particle_effect"
