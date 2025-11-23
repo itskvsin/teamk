@@ -1,10 +1,7 @@
 import Hero from "@/components/Hero";
-import PageLoader from "@/components/Render";
-import Renderer from "@/components/Render";
 import Services from "@/components/Services";
 import Testimonials  from "@/components/Testimonials";
-// import HorizontalScroll from "@/components/HorizontalScroll";
-// import Card from "@/components/Card";
+import Work from "@/components/Work";
 
 export default function Home() {
   return (
@@ -13,6 +10,7 @@ export default function Home() {
         <Hero />
         <Services />
         <Testimonials />
+        <Work />
       {/* </PageLoader> */}
     </>
   );
