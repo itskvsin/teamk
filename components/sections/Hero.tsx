@@ -20,7 +20,7 @@ export default function Hero(): JSX.Element {
           <CardBody className="relative group/card dark:hover:shadow-2xl items-center dark:bg-black w-auto h-auto rounded-xl">
             <CardItem className="text-xl">
               <Image
-                src="/images/kk.png"
+                src="/images/joining_hands.png"
                 height={600}
                 width={600}
                 className="h-60 w-60 sm:h-62 sm:w-62 md:h-64 md:w-64 lg:h-80 lg:w-80 object-contain rounded-xl"
