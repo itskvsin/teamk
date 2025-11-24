@@ -5,10 +5,10 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 
-import Services from "@/components/Services";
-import Testimonials from "@/components/Testimonials";
-import Work from "@/components/Work";
-import Hero from "@/components/Hero";
+import Services from "@/components/sections/Services";
+import Testimonials from "@/components/sections/Testimonials";
+import Work from "@/components/sections/Work";
+import Hero from "@/components/sections/Hero";
 
 gsap.registerPlugin(ScrollTrigger);
 

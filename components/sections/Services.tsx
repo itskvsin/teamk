@@ -4,6 +4,7 @@ import React, { JSX, useEffect, useRef, useState } from "react";
 
 let gsap: any = null;
 let ScrollTrigger: any = null;
+let ScrollSmoother: any = null;
 
 const loadGSAP = async () => {
   if (!gsap) {
@@ -11,7 +12,7 @@ const loadGSAP = async () => {
     gsap = gsapModule.default;
     const st = await import("gsap/ScrollTrigger");
     ScrollTrigger = st.ScrollTrigger;
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
   }
 };
 
@@ -42,23 +43,21 @@ const ServiceCard = ({ icon, title, description, index }: ServiceCardProps) => {
 
       gsap.fromTo(
         cardRef.current,
-        { y: 100, opacity: 0 },
+        {
+          y: 80,
+          opacity: 0,
+        },
         {
           y: 0,
           opacity: 1,
-          duration: 1,
-          delay: index * 2,
+          duration: 0.8,
+          // ease: "power2.out",
+          delay: index * 0.15,
           scrollTrigger: {
             trigger: cardRef.current,
-            pin: true,
-            start: "center center",
-            end: "bottom bottom",
-            scrub: 1,
-            // snap: {
-            //   snapTo: "labels",
-            //   duration: { min: 0.2, max: 3 },
-            //   delay: 0.2,
-            // },
+            start: "top 85%", // when card enters viewport
+            toggleActions: "play none none none",
+            once: true,
           },
         }
       );
@@ -67,13 +66,13 @@ const ServiceCard = ({ icon, title, description, index }: ServiceCardProps) => {
 
   return (
     <div
-      className="overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-105"
+      className=" cursor-pointer transition-transform duration-300 hover:scale-105"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
         ref={cardRef}
-        className="flex flex-col h-70 items-start gap-4 p-6 opacity-0"
+        className="flex overflow-hidden flex-col h-70 items-start gap-4 p-6 opacity-0"
       >
         <div className="w-16 h-16 flex items-center justify-center">
           {React.cloneElement(icon, { isHovered })}
@@ -329,26 +328,31 @@ const Services = () => {
     loadGSAP().then(() => {
       gsap.fromTo(
         titleRef.current,
-        { y: 100, opacity: 0 },
+        { y: 60, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.4,
-          ease: "power3.out",
+          duration: 0.6,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: titleRef.current,
-            pin: true,
-            start: "bottom bottom",
-            end: "bottom bottom",
-            scrub: 1,
-            // snap: {
-            //   snapTo: "labels",
-            //   duration: { min: 0.2, max: 3 },
-            //   delay: 0.2,
-            // },
+            start: "top 80%",
+            toggleActions: "play none none none",
           },
         }
       );
+
+      // Magnetic scroll snap
+      ScrollTrigger.create({
+        trigger: ".services-section",
+        start: "top top",
+        end: "bottom bottom",
+        snap: {
+          snapTo: "labels",
+          duration: { min: 0.3, max: 0.6 },
+          ease: "power2.inOut",
+        },
+      });
     });
   }, []);
 
@@ -393,7 +397,7 @@ const Services = () => {
 
   return (
     <div className="min-h-screen relative bg-[#f5f5f5] flex items-center justify-between px-20">
-      <section className="px-8  py-16 w-full lg:gap-20 flex justify-between">
+      <section className="services-section px-8 py-16 w-full lg:gap-20 flex justify-between">
         <h1
           ref={titleRef}
           className="text-5xl sticky top-10 md:text-6xl font-bold mb-16 opacity-0"
