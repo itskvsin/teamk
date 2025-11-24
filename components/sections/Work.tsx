@@ -16,7 +16,11 @@ export default function Work() {
       gsap.registerPlugin(ScrollTrigger);
 
       imageRefs.current.forEach((video, index) => {
-        if (video && overlayRefs.current[index] && containerRefs.current[index]) {
+        if (
+          video &&
+          overlayRefs.current[index] &&
+          containerRefs.current[index]
+        ) {
           // GSAP reveal animation
           gsap.set(video, { scale: 1.3, opacity: 0 });
           gsap.set(overlayRefs.current[index], { scaleX: 1 });
@@ -151,19 +155,16 @@ export default function Work() {
         </h1>
         <div className="flex items-center justify-between mb-20">
           <div className="h-1 w-100 bg-gray-400"></div>
-          <p className="text-zinc-400 ">
-          Our Portfolio
-        </p>
+          <p className="text-zinc-400 ">Our Portfolio</p>
           <div className="h-1 w-100 bg-gray-400"></div>
-
         </div>
 
         <div className="-space-y-40">
           {allVideos.map((video, index) => (
             <div
               key={video.id}
-              className={`flex ${
-                index % 2 === 0 ? "justify-start" : "justify-end"
+              className={`flex flex-col ${
+                index % 2 === 0 ? "items-start" : "items-end"
               }`}
             >
               <div
@@ -206,6 +207,16 @@ export default function Work() {
                   className="absolute inset-0 bg-linear-to-r from-[#f3f3f3] to-[#f5f5f5] pointer-events-none"
                   style={{ transformOrigin: "right" }}
                 />
+              </div>
+
+              {/* Heading and Description below card */}
+              <div className="mt-6 px-2 w-full md:w-5/12">
+                <h3 className="text-2xl font-bold text-black mb-2">
+                  {video.category}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {video.categoryDescription}
+                </p>
               </div>
             </div>
           ))}
