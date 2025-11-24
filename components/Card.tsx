@@ -16,4 +16,4 @@ export default function Card({ title, content }: CardProps) {
       </p>
     </div>
   );
-}
+} 

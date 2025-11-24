@@ -3,17 +3,18 @@ import Navbar from "@/components/Navbar";
 // import Services from "@/components/Services";
 // import Testimonials  from "@/components/Testimonials";
 // import Work from "@/components/Work";
+import PageLoader from "@/components/Render";
 
 export default function Home() {
   return (
     <>
-      {/* <PageLoader> */}
+      <PageLoader>
       <Navbar />
         {/* <Hero />
         <Services />
         <Testimonials />
         <Work /> */}
-      {/* </PageLoader> */}
+      </PageLoader>
     </>
   );
 }
