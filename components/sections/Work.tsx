@@ -24,7 +24,7 @@ export default function Work() {
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: video.parentElement,
-              start: "top 80%",
+              start: "top 60%",
               end: "bottom 20%",
               toggleActions: "play none none reverse",
             },
@@ -61,8 +61,9 @@ export default function Work() {
           // VIDEO PLAY / PAUSE CONTROL BASED ON VISIBILITY
           ScrollTrigger.create({
             trigger: video.parentElement,
-            start: "top 80%",
-            end: "bottom 20%",
+            start: "top 60%",
+            end: "bottom 50%",
+            // markers: true,
             onEnter: () => {
               video.play().catch(() => {});
             },
@@ -148,11 +149,16 @@ export default function Work() {
         <h1 className="text-5xl uppercase font-bold text-black mb-4 text-center">
           Glimpses
         </h1>
-        <p className="text-zinc-400 text-center mb-16">
+        <div className="flex items-center justify-between mb-20">
+          <div className="h-1 w-100 bg-gray-400"></div>
+          <p className="text-zinc-400 ">
           Our Portfolio
         </p>
+          <div className="h-1 w-100 bg-gray-400"></div>
 
-        <div className="space-y-32">
+        </div>
+
+        <div className="-space-y-40">
           {allVideos.map((video, index) => (
             <div
               key={video.id}
@@ -164,7 +170,7 @@ export default function Work() {
                 ref={(el) => {
                   containerRefs.current[index] = el;
                 }}
-                className="relative overflow-hidden rounded-2xl h-[650px] w-full md:w-1/3 shadow-2xl"
+                className="relative overflow-hidden rounded-2xl h-[750px] w-full md:w-5/12 shadow-2xl"
               >
                 {/* Video */}
                 <video
@@ -172,7 +178,7 @@ export default function Work() {
                     imageRefs.current[index] = el;
                   }}
                   src={video.videoUrl}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-fill"
                   loop
                   muted
                   playsInline
