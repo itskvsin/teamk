@@ -14,9 +14,11 @@ export default function PageLoader({
 
   // Image cycle
   const images = [
-    "/images/3dImage.png",
-    "/images/image_(2).png",
-    "/images/image__2_-removebg-preview.png",
+    '/services_illustration/2d_animation.png',
+    '/services_illustration/video_editing.png',
+    '/services_illustration/content_strategy.png',
+    '/services_illustration/motion_design.png',
+    '/services_illustration/organic_growth.png',
   ];
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -24,13 +26,13 @@ export default function PageLoader({
     // Show stack before spreading
     const stackTimer = setTimeout(() => {
       setShowStack(true);
-    }, 2600);
+    }, 2000);
 
     // Start spreading
     const spreadTimer = setTimeout(() => {
       setSpreading(true);
-      setTimeout(() => setLoading(false), 1000);
-    }, 3000);
+      setTimeout(() => setLoading(false), 1800);
+    }, 2001);
 
     if (loading) {
       document.body.style.overflow = "hidden";
@@ -41,7 +43,7 @@ export default function PageLoader({
       if (loading && !spreading && !showStack) {
         setCurrentImage((prev) => (prev + 1) % images.length);
       }
-    }, 600);
+    }, 300);
 
     return () => {
       clearTimeout(stackTimer);
@@ -55,10 +57,12 @@ export default function PageLoader({
     <div className="min-h-screen w-full relative overflow-hidden">
       {loading && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
+          className="fixed inset-0 z-9999 flex  items-center px-10 justify-between bg-black"
           initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
         >
+
+      <p className="text-white w-1/12 uppercase">Built in India</p>
           <AnimatePresence mode="wait">
             {!showStack && !spreading ? (
               // Phase 1: Cycling images
@@ -68,11 +72,11 @@ export default function PageLoader({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.1 }}
-                className="w-40 h-56 object-cover rounded-xl shadow-lg"
+                className="w-30 h-46 object-cover rounded-xl shadow-lg"
               />
             ) : showStack && !spreading ? (
               // Phase 2: Stacked cards
-              <div className="relative w-40 h-56">
+              <div className="relative w-30 h-46">
                 {images.map((img, index) => (
                   <motion.img
                     key={`stack-${index}`}
@@ -83,8 +87,8 @@ export default function PageLoader({
                     }}
                     animate={{ 
                       y: index * 8,
-                      translateY: index *4,
-                      translateX: index * 4,
+                      translateY: index * 8,
+                      translateX: index * 12,
                       zIndex: images.length - index
                     }}
                     transition={{ 
@@ -97,37 +101,36 @@ export default function PageLoader({
               </div>
             ) : (
               // Phase 3: Spreading animation
-              <div className="relative w-full h-full flex items-center justify-center">
+              <div className="relative w-3/4 flex items-center justify-center">
                 {images.map((img, index) => (
                   <motion.img
                     key={`spread-${index}`}
                     src={img}
                     initial={{ 
                       y: (index - images.length + 1) * -8,
-                      // rotate: (index - 1) * 3,
-                      // scale: 1 - (images.length - index - 1) * 0.03,
                       opacity: 1
                     }}
                     animate={{ 
-                      y: (index - 1) * 280,
-                      // rotate: 0,
-                      // scale: 0.85,
-                      // opacity: 0.3
+                      y: (index - 2) * 180,
+                      gap: 10,
                     }}
                     transition={{ 
                       duration: 1,
                       ease: "easeInOut",
-                      // delay: index * 0.05
+                      delay: index * 0.05
                     }}
-                    className="absolute w-40 h-56 object-cover rounded-xl shadow-2xl"
+                    className="absolute w-30 h-40 object-cover rounded-xl shadow-2xl"
                   />
+
+                  
                 ))}
               </div>
             )}
           </AnimatePresence>
+      <p className="text-white uppercase">Scaling globally.</p>
+
         </motion.div>
       )}
-
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: loading ? 0 : 1 }}
@@ -139,3 +142,7 @@ export default function PageLoader({
     </div>
   );
 }
+  // A multi-awarded interactive digital studio crafting
+  // immersive & interactive experiences for global brands since 2006
+  // HUMAN THINKERS
+  // DIGITAL MAKERS
