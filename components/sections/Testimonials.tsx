@@ -236,20 +236,23 @@ export default function DraggableTestimonials() {
           onTouchEnd={handleDragEnd}
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          <div className="flex gap-6 py-8">
+          <div className="flex gap-6 py-8 overflow-x-auto snap-x snap-mandatory md:overflow-visible">
             {extendedTestimonials.map((testimonial, index) => (
               <div
                 key={`${testimonial.id}-${index}`}
-                className="shrink-0 flex w-2/4 h-[50vh] bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-200"
+                className="shrink-0 snap-center flex w-[85vw] md:w-2/4 h-auto md:h-[50vh] bg-white rounded-xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-200"
                 style={{ userSelect: "none" }}
               >
-                <div className="flex items-center gap-4">
-                  <div
-                    className={`w-2/4 h-full rounded-lg bg-no-repeat bg-top bg-cover flex items-center justify-center text-white font-semibold text-lg`}
-                    style={{ backgroundImage: `url(${testimonial.image})` }}
-                  ></div>
+                <div className="flex flex-col md:flex-row w-full gap-4">
+                  {/* IMAGE */}
+<div
+  className={`w-full md:w-2/4 h-96 md:h-full rounded-lg bg-no-repeat bg-top bg-cover`}
+  style={{ backgroundImage: `url(${testimonial.image})` }}
+></div>
 
-                  <div className="w-2/4 flex flex-col gap-4">
+
+                  {/* TEXT SECTION */}
+                  <div className="w-full md:w-2/4 flex flex-col gap-4">
                     <div>
                       <h3 className="text-black font-semibold text-lg">
                         {testimonial.client}
@@ -257,7 +260,6 @@ export default function DraggableTestimonials() {
                       <p className="text-gray-600 text-sm">
                         {testimonial.title}
                       </p>
-                      {/* {console.log(testimonial.image)} */}
                     </div>
 
                     <p className="text-gray-700 leading-relaxed text-base">

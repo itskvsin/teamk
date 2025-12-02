@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { AiOutlineAudioMuted } from "react-icons/ai";
+import { allVideos } from "@/data/WorkVideos";
 
 export default function Work() {
   const imageRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -52,7 +53,7 @@ export default function Work() {
 
           // PARALLAX EFFECT
           gsap.to(containerRefs.current[index], {
-            y: -100,
+            y: -80,
             ease: "none",
             scrollTrigger: {
               trigger: containerRefs.current[index],
@@ -88,78 +89,19 @@ export default function Work() {
     loadGSAP();
   }, []);
 
-  const allVideos = [
-    {
-      id: "growthx-trailer",
-      videoUrl: "https://pratt-css.com/TeamK/Vertical/Ep 01 - Sports F1.webm",
-      category: "Podcasts",
-      categoryDescription:
-        "We create podcasts so captivating, they'll have listeners forgetting they're out of snacks.",
-      duration: "1:45",
-      views: "8.2K",
-    },
-    {
-      id: "aashna-podcast",
-      videoUrl:
-        "https://pratt-css.com/TeamK/Vertical/Ep 02 - Red Bull Racing - Built to Win.webm",
-      category: "Podcasts",
-      categoryDescription:
-        "We create podcasts so captivating, they'll have listeners forgetting they're out of snacks.",
-      duration: "3:12",
-      views: "12.5K",
-    },
-    {
-      id: "prachyam",
-      videoUrl: "https://pratt-css.com/TeamK/Vertical/Ep3.webm",
-      category: "Podcasts",
-      categoryDescription:
-        "We create podcasts so captivating, they'll have listeners forgetting they're out of snacks.",
-      duration: "2:18",
-      views: "9.8K",
-    },
-    {
-      id: "growth-school",
-      videoUrl:
-        "https://pratt-css.com/TeamK/Vertical/Ep 04 - Ferrari - Built from Blood.webm",
-      category: "Shorts & Reels",
-      categoryDescription:
-        "We make shorts and reels so good, even your ex might double-tap. Quick, punchy, and scroll-stopping—because who has time for boring?",
-      duration: "0:45",
-      views: "25.3K",
-    },
-    {
-      id: "amish-intro",
-      videoUrl: "https://pratt-css.com/TeamK/Vertical/Ep5.webm",
-      category: "Shorts & Reels",
-      categoryDescription:
-        "We make shorts and reels so good, even your ex might double-tap. Quick, punchy, and scroll-stopping—because who has time for boring?",
-      duration: "1:15",
-      views: "18.7K",
-    },
-    {
-      id: "kuku-fm",
-      videoUrl: "https://pratt-css.com/TeamK/Vertical/Ep6.webm",
-      category: "Shorts & Reels",
-      categoryDescription:
-        "We make shorts and reels so good, even your ex might double-tap. Quick, punchy, and scroll-stopping—because who has time for boring?",
-      duration: "2:30",
-      views: "15.1K",
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-[#f5f5f5] py-20 px-6 overflow-hidden">
+    <div className="min-h-screen bg-[#f5f5f5] lg:py-20 px-6 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-5xl uppercase font-bold text-black mb-4 text-center">
           Glimpses
         </h1>
-        <div className="flex items-center justify-between mb-20">
-          <div className="h-1 w-100 bg-gray-400"></div>
+        <div className="flex items-center justify-center gap-6 lg:gap-0 lg:justify-between mb-20">
+          <div className="h-1 w-20 lg:w-100 bg-gray-400"></div>
           <p className="text-zinc-400 ">Our Portfolio</p>
-          <div className="h-1 w-100 bg-gray-400"></div>
+          <div className="h-1 w-20 lg:w-100 bg-gray-400"></div>
         </div>
 
-        <div className="-space-y-40">
+        <div className="space-y-20 lg:-space-y-40">
           {allVideos.map((video, index) => (
             <div
               key={video.id}
@@ -171,7 +113,7 @@ export default function Work() {
                 ref={(el) => {
                   containerRefs.current[index] = el;
                 }}
-                className="relative overflow-hidden rounded-2xl h-[750px] w-full md:w-5/12 shadow-2xl"
+                className="relative overflow-hidden rounded-2xl h-[600px] lg:h-[750] w-full md:w-5/12 shadow-2xl"
               >
                 {/* Video */}
                 <video
@@ -210,7 +152,7 @@ export default function Work() {
               </div>
 
               {/* Heading and Description below card */}
-              <div className="mt-6 px-2 w-full md:w-5/12">
+              <div className="px-2 w-full md:w-5/12">
                 <h3 className="text-2xl font-bold text-black mb-2">
                   {video.category}
                 </h3>

@@ -71,7 +71,7 @@ const ServiceCard = ({ icon, title, description, index }: ServiceCardProps) => {
     >
       <div
         ref={cardInnerRef}
-        className="flex overflow-hidden flex-col h-60 items-start gap-4 p-6 opacity-0 will-change-transform"
+        className="flex w-full border-b-4 border-dotted sm:border-0 overflow-hidden flex-col py-6 items-start gap-4 lg:p-6 opacity-0 will-change-transform"
       >
         <div className="w-16 h-16 flex items-center justify-center">
           {React.cloneElement(icon, { isHovered })}
@@ -127,30 +127,31 @@ const Services = () => {
   }, []);
 
 
-  return (
-    <div className="min-h-screen relative bg-[#f5f5f5] flex items-center justify-between px-20">
-      <section className="services-section px-8 py-16 w-full lg:gap-20 flex justify-between">
-        <h1
-          ref={titleRef}
-          className="text-5xl sticky top-10 md:text-6xl font-bold mb-16 opacity-0"
-        >
-          Services
-        </h1>
+return (
+  <div className="min-h-screen relative bg-[#f5f5f5] flex items-center justify-center px-4 md:px-12 lg:px-20">
+    <section className="services-section px-4 md:px-8 py-16 w-full flex flex-col md:flex-row md:justify-between gap-10">
+      <h1
+        ref={titleRef}
+        className="text-4xl sm:text-5xl md:text-6xl font-bold opacity-0 md:sticky md:top-20"
+      >
+        Services
+      </h1>
 
-        <div className="grid grid-cols-1 border-l-2 md:grid-cols-2 border-black max-w-7xl lg:grid-cols-3 gap-x-12 gap-y-8">
-          {services.map((service, index) => (
-            <ServiceCard
-              key={index}
-              icon={service.icon}
-              description={service.description}
-              index={index}
-              title={service.title}
-            />
-          ))}
-        </div>
-      </section>
-    </div>
-  );
+      <div className="grid grid-cols-1 md:border-l border-black pt-6 md:pt-0 md:pl-8 md:grid-cols-2 lg:grid-cols-3  w-full max-w-6xl">
+        {services.map((service, index) => (
+          <ServiceCard
+            key={index}
+            icon={service.icon}
+            description={service.description}
+            index={index}
+            title={service.title}
+          />
+        ))}
+      </div>
+    </section>
+  </div>
+);
+
 };
 
 export default Services;
