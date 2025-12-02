@@ -9,6 +9,7 @@ import Services from "@/components/sections/Services";
 import Testimonials from "@/components/sections/Testimonials";
 import Work from "@/components/sections/Work";
 import Hero from "@/components/sections/Hero";
+import ContactUs from "./sections/ContactUs";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,91 +33,67 @@ export default function Navbar() {
         isMobile: "(max-width: 767px)",
       },
       (context) => {
-        let { isDesktop, isMobile } = context.conditions!;
+        const { isDesktop, isMobile } = context.conditions!;
 
         // ===========================
-        // 🖥 DESKTOP LOGO MOVEMENT
+        // DESKTOP
         // ===========================
         if (isDesktop) {
-          const tl = gsap.timeline({
+          // Soft drag of navbar ONLY
+          const tlScroll = gsap.timeline({
             scrollTrigger: {
               trigger: footer,
               start: "top bottom",
-              end: "top top",
-              scrub: 1.3,
+              end: "top 40%", // navbar moves only until mid-range
+              scrub: 1.2,
             },
           });
 
-          tl.to(nav, { y: 120, duration: 1 }, 0)
-            .to(
-              logo,
-              {
-                scale: 7,
-                x: -100,
-                y: 100,
-                duration: 1.2,
-                ease: "power3.out",
-              },
-              0
-            )
-            .to(
-              navLinks,
-              {
-                opacity: 0,
-                y: -40,
-                duration: 0.6,
-              },
-              0
-            );
+          tlScroll.to(nav, { y: 120, duration: 1, ease: "power2.out" }, 0)
+                 .to(navLinks, { opacity: 0, y: -30, duration: 0.4 }, 0);
 
-          return () => tl.kill();
+          // Final scale + reposition ONLY at final scroll stage
+          const tlFinal = gsap.timeline({
+            scrollTrigger: {
+              trigger: footer,
+              start: "top 40%", // start much later
+              end: "top top",
+              scrub: 1.5,
+            },
+          });
+
+          tlFinal.to(logo, {
+            scale: 7,
+            x: -90,
+            y: 120,
+            duration: 1.2,
+            ease: "power3.out",
+          });
+
+          return () => {
+            tlScroll.kill();
+            tlFinal.kill();
+          };
         }
 
         // ===========================
-        // 📱 MOBILE — No dragging, adaptive
+        // MOBILE — No drag / No scaling based on screen
         // ===========================
         if (isMobile) {
-          const tl = gsap.timeline({
+          const tlMobile = gsap.timeline({
             scrollTrigger: {
               trigger: footer,
               start: "top bottom",
               end: "top 85%",
-              scrub: false, // <- NO DRAGGING
+              scrub: false,
               toggleActions: "play reverse play reverse",
             },
           });
 
-          tl.to(
-            nav,
-            {
-              y: 60,
-              duration: 0.5,
-              ease: "power2.out",
-            },
-            0
-          )
-            .to(
-              logo,
-              {
-                scale: 3.2,
-                x: -40,
-                y: 160,
-                duration: 0.6,
-                ease: "power2.out",
-              },
-              0
-            )
-            .to(
-              navLinks,
-              {
-                opacity: 0,
-                y: -25,
-                duration: 0.4,
-              },
-              0
-            );
+          tlMobile.to(nav, { y: 40, duration: 0.4, ease: "power2.out" }, 0)
+                  .to(navLinks, { opacity: 0, y: -20, duration: 0.3 }, 0);
 
-          return () => tl.kill();
+          return () => tlMobile.kill();
         }
       }
     );
@@ -147,29 +124,14 @@ export default function Navbar() {
             />
           </div>
 
-          {/* NAV LINKS */}
           <div
             ref={navLinksRef}
             className="hidden md:flex text-lg gap-8 items-center"
           >
-            <a href="#home" className="nav-item text-black hover:text-[#f5f5f5]">
-              Home
-            </a>
-            <a href="#about" className="nav-item text-black hover:text-[#f5f5f5]">
-              About
-            </a>
-            <a
-              href="#services"
-              className="nav-item text-black hover:text-[#f5f5f5]"
-            >
-              Services
-            </a>
-            <a
-              href="#contact"
-              className="nav-item text-black hover:text-[#f5f5f5]"
-            >
-              Contact
-            </a>
+            <a href="#home" className="nav-item text-black hover:text-gray-600">Home</a>
+            <a href="#about" className="nav-item text-black hover:text-gray-600">About</a>
+            <a href="#services" className="nav-item text-black hover:text-gray-600">Services</a>
+            <a href="#contact" className="nav-item text-black hover:text-gray-600">Contact</a>
           </div>
         </div>
       </nav>
@@ -179,6 +141,7 @@ export default function Navbar() {
       <Services />
       <Testimonials />
       <Work />
+      <ContactUs />
 
       {/* FOOTER */}
       <footer
@@ -187,43 +150,25 @@ export default function Navbar() {
       >
         <div className="mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
-            {/* LEFT — Logo lands here */}
             <div className="md:col-span-1"></div>
 
-            {/* ABOUT */}
             <div className="flex flex-col items-end">
               <h3 className="text-xl font-bold text-black mb-4">About Us</h3>
               <p className="text-black/80 leading-relaxed w-2/3 text-right">
-                We create compelling video content that captivates audiences and
-                drives results. From podcasts to viral shorts, we help brands
-                tell their stories.
+                We create compelling video content that captivates audiences and drives results.
               </p>
             </div>
 
-            {/* QUICK LINKS */}
             <div className="text-right">
               <h3 className="text-xl font-bold text-black mb-4">Quick Links</h3>
               <ul className="space-y-3">
-                <li>
-                  <a className="text-black/80 hover:text-black" href="#home">
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a className="text-black/80 hover:text-black" href="#about">
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a className="text-black/80 hover:text-black" href="#contact">
-                    Contact Us
-                  </a>
-                </li>
+                <li><a href="#home" className="text-black/80 hover:text-black">Home</a></li>
+                <li><a href="#about" className="text-black/80 hover:text-black">About Us</a></li>
+                <li><a href="#contact" className="text-black/80 hover:text-black">Contact Us</a></li>
               </ul>
             </div>
           </div>
 
-          {/* CONTACT */}
           <div className="border-t border-black pt-12 mb-12">
             <h3 className="text-xl font-bold text-black mb-6">Contact</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-black/80">
@@ -233,7 +178,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* COPYRIGHT */}
           <div className="border-t border-black pt-8 text-center">
             <p className="text-gray-500">© 2025 Team K. All rights reserved.</p>
           </div>
