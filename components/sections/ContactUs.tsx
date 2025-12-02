@@ -9,13 +9,34 @@ import { RiMailLine, RiPhoneLine, RiMapPinLine } from "react-icons/ri";
 // gsap.registerPlugin(useGSAP)
 gsap.registerPlugin(SplitText);
 
+const textEnter = (hovering: boolean) => {
+  const tl = gsap.timeline({ defaults: { duration: 0.4, ease: "power3.out" } });
+
+  if (hovering) {
+    tl.to(".btn-text", { y: "-100%", opacity: 0 }, 0).to(
+      ".btn-text-hover",
+      { y: "0%", opacity: 1 },
+      0
+    );
+  } else {
+    tl.to(".btn-text", { y: "0%", opacity: 1 }, 0).to(
+      ".btn-text-hover",
+      { y: "100%", opacity: 0 },
+      0
+    );
+  }
+};
+
 export default function ContactUs() {
   const headingRef = useRef(null);
+  const buttonRef = useRef(null);
 
   useEffect(() => {
     let split = SplitText.create(headingRef.current, {
       type: "words, chars",
     });
+
+    let targets = gsap.utils.toArray(headingRef.current);
 
     gsap.from(split.words, {
       duration: 1.4,
@@ -34,7 +55,7 @@ export default function ContactUs() {
 
   return (
     <div className="h-screen bg-[#f5f5f5] text-black flex items-center justify-evenly flex-col">
-      {/* Heading */}
+      {/* Heading */}"
       <div>
         <h1
           ref={headingRef}
@@ -49,7 +70,6 @@ export default function ContactUs() {
           <div className="h-0.5 w-1/4 bg-black"></div>
         </div>
       </div>
-
       {/* Form */}
       <div className=" w-full max-w-7xl rounded-3xl p-10 flex items-start justify-around">
         <div>
@@ -138,9 +158,16 @@ export default function ContactUs() {
             <div className="flex justify-center ">
               <button
                 type="submit"
-                className="bg-[#B02A2A] hover:bg-[#8d2020] w-full transition-all rounded-xl px-10 py-5  font-semibold text-white"
+                className="btn relative overflow-hidden bg-[#B02A2A] w-full transition-all rounded-xl py-8 font-semibold cursor-pointer text-white"
+                onMouseEnter={() => textEnter(true)}
+                onMouseLeave={() => textEnter(false)}
               >
-                Send Message
+                <span className="btn-text absolute inset-0 flex items-center justify-center">
+                  Send Message
+                </span>
+                <span className="btn-text-hover absolute inset-0 flex items-center justify-center translate-y-full opacity-0">
+                  Let’s Go →
+                </span>
               </button>
             </div>
           </form>
