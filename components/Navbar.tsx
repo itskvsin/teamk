@@ -152,14 +152,14 @@ export default function Navbar() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             <div className="md:col-span-1"></div>
 
-            <div className="flex flex-col items-end">
+            <div className="flex flex-col items-center lg:items-end">
               <h3 className="text-xl font-bold text-black mb-4">About Us</h3>
-              <p className="text-black/80 leading-relaxed w-2/3 text-right">
-                We create compelling video content that captivates audiences and drives results.
+              <p className="text-black/80 leading-relaxed w-full lg:w-2/3 text-sm text-center lg:text-end">
+                We create compelling video content that captivates audiences and drives results. From podcasts to viral shorts, we help brands tell their stories.
               </p>
             </div>
 
-            <div className="text-right">
+            <div className="text-center lg:text-right">
               <h3 className="text-xl font-bold text-black mb-4">Quick Links</h3>
               <ul className="space-y-3">
                 <li><a href="#home" className="text-black/80 hover:text-black">Home</a></li>
@@ -169,7 +169,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          <div className="border-t border-black pt-12 mb-12">
+          <div className="border-t text-center border-black pt-12 mb-12">
             <h3 className="text-xl font-bold text-black mb-6">Contact</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-black/80">
               <p>krishncreates@gmail.com</p>
