@@ -1,13 +1,19 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { AiOutlineAudioMuted } from "react-icons/ai";
+import { useEffect, useRef, useState } from "react";
+// import { AiOutlineAudioMuted } from "react-icons/ai";
+import { GiSpeaker, GiSpeakerOff } from "react-icons/gi";
 import { allVideos } from "@/data/WorkVideos";
 
 export default function Work() {
   const imageRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const overlayRefs = useRef<(HTMLDivElement | null)[]>([]);
   const containerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [mutedStates, setMutedStates] = useState<boolean[]>(() =>
+    allVideos.map(() => true)
+  );
+
+  const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
     const loadGSAP = async () => {
@@ -90,7 +96,10 @@ export default function Work() {
   }, []);
 
   return (
-    <div id="work" className="min-h-screen bg-[#f5f5f5] lg:py-20 px-6 overflow-hidden">
+    <div
+      id="work"
+      className="min-h-screen bg-[#f5f5f5] lg:py-20 px-6 overflow-hidden"
+    >
       <div className="max-w-6xl mx-auto">
         <h1 className="text-5xl uppercase font-bold text-black mb-4 text-center">
           Glimpses
@@ -113,7 +122,7 @@ export default function Work() {
                 ref={(el) => {
                   containerRefs.current[index] = el;
                 }}
-                className="relative overflow-hidden rounded-2xl h-[600px] lg:h-[750] w-full md:w-5/12 shadow-2xl"
+                className="relative overflow-hidden rounded-2xl h-[600px] lg:h-[700] w-full md:w-5/12 shadow-2xl"
               >
                 {/* Video */}
                 <video
@@ -130,15 +139,28 @@ export default function Work() {
 
                 {/* MUTE / UNMUTE BUTTON */}
                 <button
+                  ref={(el) => {
+                    btnRefs.current[index] = el;
+                  }}
+                  aria-label={
+                    mutedStates[index] ? "Unmute video" : "Mute video"
+                  }
                   onClick={() => {
                     const vid = imageRefs.current[index];
                     if (!vid) return;
 
-                    vid.muted = !vid.muted;
+                    const newMuted = !mutedStates[index];
+                    vid.muted = newMuted;
+
+                    setMutedStates((prev) => {
+                      const updated = [...prev];
+                      updated[index] = newMuted;
+                      return updated;
+                    });
                   }}
-                  className="absolute bottom-4 left-4 border-2 hover:bg-black hover:text-white transition-all duration-400 z-10 text-black px-4 py-2 text-xl rounded-lg backdrop-blur-md"
+                  className="sound-btn absolute bottom-4 left-4 z-10 px-4 py-2 text-xl rounded-lg backdrop-blur-md"
                 >
-                  <AiOutlineAudioMuted />
+                  {mutedStates[index] ? <GiSpeakerOff /> : <GiSpeaker />}
                 </button>
 
                 {/* Overlay */}

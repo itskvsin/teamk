@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import Image from "next/image";
 
 import Services from "@/components/sections/Services";
@@ -10,21 +11,39 @@ import Testimonials from "@/components/sections/Testimonials";
 import Work from "@/components/sections/Work";
 import Hero from "@/components/sections/Hero";
 import ContactUs from "./sections/ContactUs";
-import Link from "next/link";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function Navbar() {
-  const navRef = useRef(null);
-  const logoRef = useRef(null);
-  const navLinksRef = useRef(null);
-  const footerRef = useRef(null);
+  const navRef = useRef<HTMLElement | null>(null);
+  const logoRef = useRef<HTMLDivElement | null>(null);
+  const navLinksRef = useRef<HTMLDivElement | null>(null);
+  const footerRef = useRef<HTMLElement | null>(null);
+
+  // ===============================
+  // GSAP SCROLL FUNCTION (OPTION 3)
+  // ===============================
+  const scrollToSection = (id: string) => {
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    gsap.to(window, {
+      duration: 1.2,
+      scrollTo: {
+        y: target,
+        offsetY: 90, // navbar height
+      },
+      ease: "power3.inOut",
+    });
+  };
 
   useEffect(() => {
     const nav = navRef.current;
     const logo = logoRef.current;
     const navLinks = navLinksRef.current;
     const footer = footerRef.current;
+
+    if (!nav || !logo || !navLinks || !footer) return;
 
     const mm = gsap.matchMedia();
 
@@ -40,25 +59,23 @@ export default function Navbar() {
         // DESKTOP
         // ===========================
         if (isDesktop) {
-          // Soft drag of navbar ONLY
           const tlScroll = gsap.timeline({
             scrollTrigger: {
               trigger: footer,
               start: "top bottom",
-              end: "top 40%", // navbar moves only until mid-range
+              end: "top 40%",
               scrub: 1.2,
             },
           });
 
           tlScroll
-            .to(nav, { y: 120, duration: 1, ease: "power2.out" }, 0)
+            .to(nav, { y: 120, ease: "power2.out" }, 0)
             .to(navLinks, { opacity: 0, y: -30, duration: 0.4 }, 0);
 
-          // Final scale + reposition ONLY at final scroll stage
           const tlFinal = gsap.timeline({
             scrollTrigger: {
               trigger: footer,
-              start: "top 40%", // start much later
+              start: "top 40%",
               end: "top top",
               scrub: 1.5,
             },
@@ -68,7 +85,6 @@ export default function Navbar() {
             scale: 7,
             x: -90,
             y: 120,
-            duration: 1.2,
             ease: "power3.out",
           });
 
@@ -79,7 +95,7 @@ export default function Navbar() {
         }
 
         // ===========================
-        // MOBILE — No drag / No scaling based on screen
+        // MOBILE
         // ===========================
         if (isMobile) {
           const tlMobile = gsap.timeline({
@@ -87,7 +103,6 @@ export default function Navbar() {
               trigger: footer,
               start: "top bottom",
               end: "top 85%",
-              scrub: false,
               toggleActions: "play reverse play reverse",
             },
           });
@@ -112,18 +127,15 @@ export default function Navbar() {
       {/* NAVBAR */}
       <nav
         ref={navRef}
-        className="fixed top-0 left-0 right-0 z-50 px-8 py-4 transition-all duration-300"
+        className="fixed top-0 left-0 right-0 z-50 px-8 py-4"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div
-            ref={logoRef}
-            className="text-black transition-all duration-300 origin-left"
-          >
+          <div ref={logoRef} className="origin-left">
             <Image
               src="/images/logo_no_bg.png"
               width={100}
               height={100}
-              alt="logo of team k"
+              alt="logo"
             />
           </div>
 
@@ -131,41 +143,45 @@ export default function Navbar() {
             ref={navLinksRef}
             className="hidden md:flex text-lg gap-8 items-center"
           >
-            <Link
-              href="#home"
+            <button
+              onClick={() => scrollToSection("home")}
               className="nav-item text-black hover:text-gray-600"
             >
               Home
-            </Link>
-            <Link
-              href="#services"
+            </button>
+
+            <button
+              onClick={() => scrollToSection("services")}
               className="nav-item text-black hover:text-gray-600"
             >
-              services
-            </Link>
-            <Link
-              href="#testimonials"
+              Services
+            </button>
+
+            <button
+              onClick={() => scrollToSection("testimonials")}
               className="nav-item text-black hover:text-gray-600"
             >
               Testimonials
-            </Link>
-            <Link
-              href="#work"
+            </button>
+
+            <button
+              onClick={() => scrollToSection("work")}
               className="nav-item text-black hover:text-gray-600"
             >
               Our Work
-            </Link>
-            <Link
-              href="#contact"
+            </button>
+
+            <button
+              onClick={() => scrollToSection("contact")}
               className="nav-item text-black hover:text-gray-600"
             >
               Contact Us
-            </Link>
+            </button>
           </div>
         </div>
       </nav>
 
-      {/* MAIN SECTIONS */}
+      {/* SECTIONS */}
       <Hero />
       <Services />
       <Testimonials />
