@@ -211,7 +211,7 @@ export default function DraggableTestimonials() {
   };
 
   return (
-    <div className="min-h-5/6 bg-[#f5f5f5] py-20 px-4">
+    <div id="testimonials" className="min-h-5/6 bg-[#f5f5f5] py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
@@ -245,11 +245,10 @@ export default function DraggableTestimonials() {
               >
                 <div className="flex flex-col md:flex-row w-full gap-4">
                   {/* IMAGE */}
-<div
-  className={`w-full md:w-2/4 h-96 md:h-full rounded-lg bg-no-repeat bg-top bg-cover`}
-  style={{ backgroundImage: `url(${testimonial.image})` }}
-></div>
-
+                  <div
+                    className={`w-full md:w-2/4 h-96 md:h-full rounded-lg bg-no-repeat bg-top bg-cover`}
+                    style={{ backgroundImage: `url(${testimonial.image})` }}
+                  ></div>
 
                   {/* TEXT SECTION */}
                   <div className="w-full md:w-2/4 flex flex-col gap-4">

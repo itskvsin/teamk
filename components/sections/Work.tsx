@@ -90,7 +90,7 @@ export default function Work() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] lg:py-20 px-6 overflow-hidden">
+    <div id="work" className="min-h-screen bg-[#f5f5f5] lg:py-20 px-6 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-5xl uppercase font-bold text-black mb-4 text-center">
           Glimpses

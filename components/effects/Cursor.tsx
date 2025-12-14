@@ -1,81 +1,67 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { gsap } from "gsap";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 
 export default function Cursor() {
-  const trackCursor = useRef<HTMLDivElement | null>(null);
+  const cursorRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const cursor = trackCursor.current;
+    const cursor = cursorRef.current;
+    if (!cursor) return;
 
-    let lastX = 0;
-    let lastY = 0;
-    let resetTimeout: number;
+    let mouseX = 0;
+    let mouseY = 0;
+    let posX = 0;
+    let posY = 0;
 
-    const handleMouseMove = (event: MouseEvent) => {
-      const { clientX, clientY } = event;
-
-      // Movement vector
-      const dx = clientX - lastX;
-      const dy = clientY - lastY;
-
-      lastX = clientX;
-      lastY = clientY;
-
-      // Movement angle (radians → degrees)
-      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-      // Cursor speed
-      const speed = Math.min(Math.sqrt(dx * dx + dy * dy), 100);
-
-      // Stretch amount
-      const stretch = 1 + speed * 0.02; // how long the cursor becomes
-
-      // Direction-aware stretching
-      gsap.to(cursor, {
-        rotation: angle,
-        scaleX: stretch,
-        scaleY: 1 - speed * 0.001, // slightly thinner
-        // transformOrigin: "center",
-        duration: 0.15,
-        ease: "power2.out",
-      });
-
-      // Cursor follow movement
-      gsap.to(cursor, {
-        x: clientX - 12,
-        y: clientY - 12,
-        duration: 0.3,
-        ease: "power3.out",
-      });
-
-      // Reset shape after movement stops
-      clearTimeout(resetTimeout);
-      resetTimeout = window.setTimeout(() => {
-        gsap.to(cursor, {
-          scaleX: 1,
-          scaleY: 1,
-          rotation: 0,
-          duration: 0.4,
-          ease: "power4.in",
-        });
-      }, 80);
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
     };
 
     window.addEventListener("mousemove", handleMouseMove);
 
+    const update = () => {
+      const dx = mouseX - posX;
+      const dy = mouseY - posY;
+
+      posX += dx * 0.18;
+      posY += dy * 0.18;
+
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+      const velocity = Math.min(Math.sqrt(dx * dx + dy * dy), 100);
+
+      const stretch = velocity * 0.01;
+
+      gsap.set(cursor, {
+        x: posX,
+        y: posY,
+        rotation: angle,
+        scaleX: 1 + stretch,
+        scaleY: 1 - stretch * 0.1,
+        transformOrigin: "center",
+      });
+
+      // Rubber snap-back when slow
+      if (velocity < 0.5) {
+        gsap.to(cursor, {
+          scaleX: 1,
+          scaleY: 1,
+          duration: 0.6,
+          ease: "elastic.out(1, 0.35)",
+          overwrite: "auto",
+        });
+      }
+    };
+
+    gsap.ticker.add(update);
+
     return () => {
-      clearTimeout(resetTimeout);
       window.removeEventListener("mousemove", handleMouseMove);
+      gsap.ticker.remove(update);
     };
   }, []);
 
-  return (
-    <div
-      ref={trackCursor}
-      id="cursor"
-      className="fixed pointer-events-none z-9999 h-5 w-5 rounded-full bg-white mix-blend-difference top-0 left-0"
-    />
-  );
+  return <div ref={cursorRef} className="cursor" />;
 }

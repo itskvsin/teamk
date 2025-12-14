@@ -46,7 +46,7 @@ export default function ContactUs() {
   }, []);
 
   return (
-<div className="min-h-screen flex items-center justify-center">
+<div id="contact" className="min-h-screen flex items-center justify-center">
       <div className="min-h-screen bg-[#f5f5f5] text-black flex flex-col justify-around items-center px-4 sm:px-8">
       {/* Heading */}
       <div className="w-full max-w-6xl">

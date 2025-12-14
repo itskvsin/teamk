@@ -10,6 +10,7 @@ import Testimonials from "@/components/sections/Testimonials";
 import Work from "@/components/sections/Work";
 import Hero from "@/components/sections/Hero";
 import ContactUs from "./sections/ContactUs";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,8 +50,9 @@ export default function Navbar() {
             },
           });
 
-          tlScroll.to(nav, { y: 120, duration: 1, ease: "power2.out" }, 0)
-                 .to(navLinks, { opacity: 0, y: -30, duration: 0.4 }, 0);
+          tlScroll
+            .to(nav, { y: 120, duration: 1, ease: "power2.out" }, 0)
+            .to(navLinks, { opacity: 0, y: -30, duration: 0.4 }, 0);
 
           // Final scale + reposition ONLY at final scroll stage
           const tlFinal = gsap.timeline({
@@ -90,8 +92,9 @@ export default function Navbar() {
             },
           });
 
-          tlMobile.to(nav, { y: 40, duration: 0.4, ease: "power2.out" }, 0)
-                  .to(navLinks, { opacity: 0, y: -20, duration: 0.3 }, 0);
+          tlMobile
+            .to(nav, { y: 40, duration: 0.4, ease: "power2.out" }, 0)
+            .to(navLinks, { opacity: 0, y: -20, duration: 0.3 }, 0);
 
           return () => tlMobile.kill();
         }
@@ -128,10 +131,36 @@ export default function Navbar() {
             ref={navLinksRef}
             className="hidden md:flex text-lg gap-8 items-center"
           >
-            <a href="#home" className="nav-item text-black hover:text-gray-600">Home</a>
-            <a href="#about" className="nav-item text-black hover:text-gray-600">About</a>
-            <a href="#services" className="nav-item text-black hover:text-gray-600">Services</a>
-            <a href="#contact" className="nav-item text-black hover:text-gray-600">Contact</a>
+            <Link
+              href="#home"
+              className="nav-item text-black hover:text-gray-600"
+            >
+              Home
+            </Link>
+            <Link
+              href="#services"
+              className="nav-item text-black hover:text-gray-600"
+            >
+              services
+            </Link>
+            <Link
+              href="#testimonials"
+              className="nav-item text-black hover:text-gray-600"
+            >
+              Testimonials
+            </Link>
+            <Link
+              href="#work"
+              className="nav-item text-black hover:text-gray-600"
+            >
+              Our Work
+            </Link>
+            <Link
+              href="#contact"
+              className="nav-item text-black hover:text-gray-600"
+            >
+              Contact Us
+            </Link>
           </div>
         </div>
       </nav>
@@ -155,16 +184,30 @@ export default function Navbar() {
             <div className="flex flex-col items-center lg:items-end">
               <h3 className="text-xl font-bold text-black mb-4">About Us</h3>
               <p className="text-black/80 leading-relaxed w-full lg:w-2/3 text-sm text-center lg:text-end">
-                We create compelling video content that captivates audiences and drives results. From podcasts to viral shorts, we help brands tell their stories.
+                We create compelling video content that captivates audiences and
+                drives results. From podcasts to viral shorts, we help brands
+                tell their stories.
               </p>
             </div>
 
             <div className="text-center lg:text-right">
               <h3 className="text-xl font-bold text-black mb-4">Quick Links</h3>
               <ul className="space-y-3">
-                <li><a href="#home" className="text-black/80 hover:text-black">Home</a></li>
-                <li><a href="#about" className="text-black/80 hover:text-black">About Us</a></li>
-                <li><a href="#contact" className="text-black/80 hover:text-black">Contact Us</a></li>
+                <li>
+                  <a href="#home" className="text-black/80 hover:text-black">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a href="#about" className="text-black/80 hover:text-black">
+                    About Us
+                  </a>
+                </li>
+                <li>
+                  <a href="#contact" className="text-black/80 hover:text-black">
+                    Contact Us
+                  </a>
+                </li>
               </ul>
             </div>
           </div>

@@ -128,7 +128,7 @@ const Services = () => {
 
 
 return (
-  <div className="min-h-screen relative bg-[#f5f5f5] flex items-center justify-center px-4 md:px-12 lg:px-20">
+  <div id="services" className="min-h-screen relative bg-[#f5f5f5] flex items-center justify-center px-4 md:px-12 lg:px-20">
     <section className="services-section px-4 md:px-8 py-16 w-full flex flex-col md:flex-row md:justify-between gap-10">
       <h1
         ref={titleRef}
