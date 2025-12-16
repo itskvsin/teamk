@@ -50,7 +50,7 @@ export default function Navbar() {
     });
 
 
-    t1.to(logoRef.current, {translateY: "44vh",scale: 6, duration: 1, ease: "power1.inOut"})
+    t1.to(logoRef.current, {translateY: "46vh",scale: 6, duration: 1, ease: "power1.inOut"})
 
   });
   return (
