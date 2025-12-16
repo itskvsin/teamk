@@ -9,6 +9,7 @@ import React, {
   TouchEvent,
 } from "react";
 import { testimonialsData } from "@/data/Testimonials";
+import Heading from "../Heading";
 
 interface Testimonial {
   id: number;
@@ -214,12 +215,7 @@ export default function DraggableTestimonials() {
     <div id="testimonials" className="min-h-5/6 bg-[#f5f5f5] py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
-            Testimonials
-          </h2>
-          <h1 className="text-5xl font-bold text-black mb-4">
-            What Our Clients Say
-          </h1>
+          <Heading heading="Testimonials" subHeading="What Our Clients Say" />
         </div>
 
         <div

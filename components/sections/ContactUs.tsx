@@ -183,13 +183,6 @@ export default function ContactUs() {
   return (
     <div id="contact" className="App">
       <div className="heading">
-        <h1
-          // ref={headingRef}
-          className="text-center w-full overflow-hidden flex items-center border-t-2 justify-center gap-1 text-2xl leading-tight pb-4 font-thin"
-        >
-          <div className="rounded-full border-black border h-2 w-2"></div>
-          Contact Us
-        </h1>
         <div>
           <div className="w-full text-center">
             <p className="mt-14 text-4xl md:text-6xl font-bold">GET IN TOUCH</p>

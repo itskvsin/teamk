@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 // import { AiOutlineAudioMuted } from "react-icons/ai";
 import { GiSpeaker, GiSpeakerOff } from "react-icons/gi";
 import { allVideos } from "@/data/WorkVideos";
+import Heading from "../Heading";
 
 export default function Work() {
   const imageRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -101,14 +102,7 @@ export default function Work() {
       className="min-h-screen bg-[#f5f5f5] lg:py-20 px-6 overflow-hidden"
     >
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-5xl uppercase font-bold text-black mb-4 text-center">
-          Glimpses
-        </h1>
-        <div className="flex items-center justify-center gap-6 lg:gap-0 lg:justify-between mb-20">
-          <div className="h-1 w-20 lg:w-100 bg-gray-400"></div>
-          <p className="text-zinc-400 ">Our Portfolio</p>
-          <div className="h-1 w-20 lg:w-100 bg-gray-400"></div>
-        </div>
+        <Heading heading="Glimpses" subHeading="Our Portfolio" />
 
         <div className="space-y-20 lg:-space-y-40">
           {allVideos.map((video, index) => (

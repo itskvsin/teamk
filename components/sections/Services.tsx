@@ -2,6 +2,7 @@
 
 import React, { JSX, useEffect, useRef, useState } from "react";
 import { services } from "@/data/Services";
+import Heading from "../Heading";
 
 let gsap: any = null;
 let ScrollTrigger: any = null;
@@ -87,7 +88,6 @@ const ServiceCard = ({ icon, title, description, index }: ServiceCardProps) => {
   );
 };
 
-
 // ------------------------------------------------------
 // SERVICES
 // ------------------------------------------------------
@@ -126,32 +126,28 @@ const Services = () => {
     });
   }, []);
 
+  return (
+    <div
+      id="services"
+      className="min-h-screen relative bg-[#f5f5f5] flex items-center justify-center px-4 md:px-12 lg:px-20"
+    >
+      <section className="services-section px-4 md:px-8 py-16 w-full flex flex-col md:justify-between ">
+        <Heading heading="Services" subHeading="What We Do"/>
 
-return (
-  <div id="services" className="min-h-screen relative bg-[#f5f5f5] flex items-center justify-center px-4 md:px-12 lg:px-20">
-    <section className="services-section px-4 md:px-8 py-16 w-full flex flex-col md:flex-row md:justify-between gap-10">
-      <h1
-        ref={titleRef}
-        className="text-4xl sm:text-5xl md:text-6xl font-bold opacity-0 md:sticky md:top-20"
-      >
-        Services
-      </h1>
-
-      <div className="grid grid-cols-1 md:border-l border-black pt-6 md:pt-0 md:pl-8 md:grid-cols-2 lg:grid-cols-3  w-full max-w-6xl">
-        {services.map((service, index) => (
-          <ServiceCard
-            key={index}
-            icon={service.icon}
-            description={service.description}
-            index={index}
-            title={service.title}
-          />
-        ))}
-      </div>
-    </section>
-  </div>
-);
-
+        <div className="grid grid-cols-1 pt-6 md:pt-0 md:pl-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
+          {services.map((service, index) => (
+            <ServiceCard
+              key={index}
+              icon={service.icon}
+              description={service.description}
+              index={index}
+              title={service.title}
+            />
+          ))}
+        </div>
+      </section>
+    </div>
+  );
 };
 
 export default Services;

@@ -199,10 +199,10 @@ export default function Navbar() {
         <Services />
       </div>
       <div>
-        <Testimonials />
+        <Work />
       </div>
       <div>
-        <Work />
+        <Testimonials />
       </div>
       <div className="lastSection">
         <ContactUs />
