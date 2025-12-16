@@ -38,7 +38,11 @@ export default function Navbar() {
     });
   };
 
-  useGSAP(() => {
+ useGSAP(() => {
+  const mm = gsap.matchMedia();
+
+  // DESKTOP ONLY
+  mm.add("(min-width: 768px)", () => {
     const t1 = gsap.timeline({
       scrollTrigger: {
         trigger: ".lastSection",
@@ -58,6 +62,10 @@ export default function Navbar() {
       ease: "power1.inOut",
     });
   });
+
+  return () => mm.revert(); // cleanup on resize/unmount
+});
+
   return (
     <div className="min-h-screen">
       {/* NAVBAR */}
@@ -211,7 +219,7 @@ export default function Navbar() {
       {/* FOOTER */}
       <footer
         ref={footerRef}
-        className="min-h-screen w-full bg-[#f5f5f5] px-8 flex items-end justify-between py-20"
+        className="min-h-screen w-full bg-[#f5f5f5] px-8 flex items-end justify-between md:py-20"
       >
         <div className="mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">

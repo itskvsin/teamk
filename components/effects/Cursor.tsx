@@ -6,7 +6,17 @@ import gsap from "gsap";
 export default function Cursor() {
   const cursorRef = useRef<HTMLDivElement | null>(null);
 
+  // ------------------------------------------------
+  // DESKTOP CURSOR LOGIC ONLY
+  // ------------------------------------------------
   useEffect(() => {
+    // 🚫 Disable cursor on touch devices
+    const isTouchDevice = window.matchMedia(
+      "(hover: none) and (pointer: coarse)"
+    ).matches;
+
+    if (isTouchDevice) return;
+
     const cursor = cursorRef.current;
     if (!cursor) return;
 
@@ -31,7 +41,6 @@ export default function Cursor() {
 
       const angle = Math.atan2(dy, dx) * (180 / Math.PI);
       const velocity = Math.min(Math.sqrt(dx * dx + dy * dy), 100);
-
       const stretch = velocity * 0.01;
 
       gsap.set(cursor, {
@@ -63,38 +72,52 @@ export default function Cursor() {
     };
   }, []);
 
-      useEffect(() => {
-      const cursor = cursorRef.current;
-      const calWrapper = document.querySelector(".cal-wrapper");
+  // ------------------------------------------------
+  // DISABLE CURSOR INSIDE .cal-wrapper (DESKTOP ONLY)
+  // ------------------------------------------------
+  useEffect(() => {
+    const isTouchDevice = window.matchMedia(
+      "(hover: none) and (pointer: coarse)"
+    ).matches;
 
-      if (!cursor || !calWrapper) return;
+    if (isTouchDevice) return;
 
-      const disableCursor = () => {
-        gsap.to(cursor, {
-          opacity: 0,
-          scale: 0.5,
-          duration: 0.2,
-          ease: "power2.out",
-        });
-      };
+    const cursor = cursorRef.current;
+    const calWrapper = document.querySelector(".cal-wrapper");
 
-      const enableCursor = () => {
-        gsap.to(cursor, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.2,
-          ease: "power2.out",
-        });
-      };
+    if (!cursor || !calWrapper) return;
 
-      calWrapper.addEventListener("mouseenter", disableCursor);
-      calWrapper.addEventListener("mouseleave", enableCursor);
+    const disableCursor = () => {
+      gsap.to(cursor, {
+        opacity: 0,
+        scale: 0.5,
+        duration: 0.2,
+        ease: "power2.out",
+      });
+    };
 
-      return () => {
-        calWrapper.removeEventListener("mouseenter", disableCursor);
-        calWrapper.removeEventListener("mouseleave", enableCursor);
-      };
-    }, []);
+    const enableCursor = () => {
+      gsap.to(cursor, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.2,
+        ease: "power2.out",
+      });
+    };
 
-  return <div ref={cursorRef} className="cursor custom-cursor" />;
+    calWrapper.addEventListener("mouseenter", disableCursor);
+    calWrapper.addEventListener("mouseleave", enableCursor);
+
+    return () => {
+      calWrapper.removeEventListener("mouseenter", disableCursor);
+      calWrapper.removeEventListener("mouseleave", enableCursor);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={cursorRef}
+      className="cursor custom-cursor fixed pointer-events-none z-[9999]"
+    />
+  );
 }
