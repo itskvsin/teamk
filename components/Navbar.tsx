@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -19,6 +19,7 @@ export default function Navbar() {
   const logoRef = useRef<HTMLDivElement | null>(null);
   const navLinksRef = useRef<HTMLDivElement | null>(null);
   const footerRef = useRef<HTMLElement | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   // ===============================
   // GSAP SCROLL FUNCTION (OPTION 3)
@@ -49,9 +50,13 @@ export default function Navbar() {
       },
     });
 
-
-    t1.to(logoRef.current, {translateY: "46vh",translateX: "-10vw",scale: 6, duration: 1, ease: "power1.inOut"})
-
+    t1.to(logoRef.current, {
+      translateY: "46vh",
+      translateX: "-10vw",
+      scale: 6,
+      duration: 1,
+      ease: "power1.inOut",
+    });
   });
   return (
     <div className="min-h-screen">
@@ -67,6 +72,27 @@ export default function Navbar() {
               className="h-26 w-26 object-contain"
             />
           </div>
+
+          {/* Mobile Hamburger */}
+          <button
+            className="md:hidden z-50 relative w-8 h-8 flex items-center justify-center"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {!isMenuOpen ? (
+              // HAMBURGER
+              <div className="flex flex-col gap-1">
+                <span className="w-6 h-0.5 bg-black"></span>
+                <span className="w-6 h-0.5 bg-black"></span>
+                <span className="w-6 h-0.5 bg-black"></span>
+              </div>
+            ) : (
+              // CROSS
+              <div className="relative w-6 h-6">
+                <span className="absolute top-1/2 left-0 w-6 h-0.5 bg-black rotate-45"></span>
+                <span className="absolute top-1/2 left-0 w-6 h-0.5 bg-black -rotate-45"></span>
+              </div>
+            )}
+          </button>
 
           <div
             ref={navLinksRef}
@@ -109,6 +135,61 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
+
+      {/* MOBILE MENU */}
+      {isMenuOpen && (
+        <div className="fixed inset-0  bg-transparent backdrop-blur-lg z-40 flex flex-col items-center justify-center gap-4 md:hidden">
+          <button
+            onClick={() => {
+              scrollToSection("home");
+              setIsMenuOpen(false);
+            }}
+            className="text-2xl text-black"
+          >
+            Home
+          </button>
+
+          <button
+            onClick={() => {
+              scrollToSection("services");
+              setIsMenuOpen(false);
+            }}
+            className="text-2xl text-black"
+          >
+            Services
+          </button>
+
+          <button
+            onClick={() => {
+              scrollToSection("testimonials");
+              setIsMenuOpen(false);
+            }}
+            className="text-2xl text-black"
+          >
+            Testimonials
+          </button>
+
+          <button
+            onClick={() => {
+              scrollToSection("work");
+              setIsMenuOpen(false);
+            }}
+            className="text-2xl text-black"
+          >
+            Our Work
+          </button>
+
+          <button
+            onClick={() => {
+              scrollToSection("contact");
+              setIsMenuOpen(false);
+            }}
+            className="text-2xl text-black"
+          >
+            Contact Us
+          </button>
+        </div>
+      )}
 
       {/* SECTIONS */}
       <div>

@@ -58,7 +58,7 @@ export default function Hero(): JSX.Element {
           </CardContainer>
         </div>
 
-        <div className="flex text-black items-center justify-center text-3xl sm:text-4xl md:text-6xl lg:text-7xl z-50 px-4">
+        <div className="flex text-black items-center justify-center text-3xl sm:text-4xl md:text-6xl lg:text-7xl z-10 px-4">
           <p className="hero-text text-black text-center">We overdeliver.</p>
         </div>
       </div>
