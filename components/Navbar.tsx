@@ -3,7 +3,6 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import Image from "next/image";
 
 import Services from "@/components/sections/Services";
@@ -11,8 +10,9 @@ import Testimonials from "@/components/sections/Testimonials";
 import Work from "@/components/sections/Work";
 import Hero from "@/components/sections/Hero";
 import ContactUs from "./sections/ContactUs";
+import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Navbar() {
   const navRef = useRef<HTMLElement | null>(null);
@@ -37,100 +37,26 @@ export default function Navbar() {
     });
   };
 
-  
+  useGSAP(() => {
+    const t1 = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".lastSection",
+        endTrigger: footerRef.current,
+        start: "center top",
+        end: "bottom",
+        scrub: 1,
+        markers: true,
+      },
+    });
 
-  // useEffect(() => {
-  //   const nav = navRef.current;
-  //   const logo = logoRef.current;
-  //   const navLinks = navLinksRef.current;
-  //   const footer = footerRef.current;
 
-  //   if (!nav || !logo || !navLinks || !footer) return;
+    t1.to(logoRef.current, {translateY: "44vh",scale: 6, duration: 1, ease: "power1.inOut"})
 
-  //   const mm = gsap.matchMedia();
-
-  //   mm.add(
-  //     {
-  //       isDesktop: "(min-width: 768px)",
-  //       isMobile: "(max-width: 767px)",
-  //     },
-  //     (context) => {
-  //       const { isDesktop, isMobile } = context.conditions!;
-
-  //       // ===========================
-  //       // DESKTOP
-  //       // ===========================
-  //       if (isDesktop) {
-  //         const tlScroll = gsap.timeline({
-  //           scrollTrigger: {
-  //             trigger: footer,
-  //             start: "top bottom",
-  //             end: "top 40%",
-  //             scrub: 1.2,
-  //           },
-  //         });
-
-  //         tlScroll
-  //           .to(nav, { y: 120, ease: "power2.out" }, 0)
-  //           .to(navLinks, { opacity: 0, y: -30, duration: 0.4 }, 0);
-
-  //         const tlFinal = gsap.timeline({
-  //           scrollTrigger: {
-  //             trigger: footer,
-  //             start: "top 40%",
-  //             end: "top top",
-  //             scrub: 1.5,
-  //           },
-  //         });
-
-  //         tlFinal.to(logo, {
-  //           scale: 7,
-  //           x: -90,
-  //           y: 120,
-  //           ease: "power3.out",
-  //         });
-
-  //         return () => {
-  //           tlScroll.kill();
-  //           tlFinal.kill();
-  //         };
-  //       }
-
-  //       // ===========================
-  //       // MOBILE
-  //       // ===========================
-  //       if (isMobile) {
-  //         const tlMobile = gsap.timeline({
-  //           scrollTrigger: {
-  //             trigger: footer,
-  //             start: "top bottom",
-  //             end: "top 85%",
-  //             toggleActions: "play reverse play reverse",
-  //           },
-  //         });
-
-  //         tlMobile
-  //           .to(nav, { y: 40, duration: 0.4, ease: "power2.out" }, 0)
-  //           .to(navLinks, { opacity: 0, y: -20, duration: 0.3 }, 0);
-
-  //         return () => tlMobile.kill();
-  //       }
-  //     }
-  //   );
-
-  //   return () => {
-  //     mm.kill();
-  //     ScrollTrigger.getAll().forEach((t) => t.kill());
-  //   };
-  // }, []);
-
+  });
   return (
     <div className="min-h-screen">
       {/* NAVBAR */}
-      <nav
-        ref={navRef}
-        className="fixed top-0 left-0 right-0 z-50 px-8 py-4"
-      >
+      <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 px-8 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div ref={logoRef} className="origin-left">
             <Image
@@ -184,11 +110,21 @@ export default function Navbar() {
       </nav>
 
       {/* SECTIONS */}
-      <Hero />
-      <Services />
-      <Testimonials />
-      <Work />
-      <ContactUs />
+      <div>
+        <Hero />
+      </div>
+      <div>
+        <Services />
+      </div>
+      <div>
+        <Testimonials />
+      </div>
+      <div>
+        <Work />
+      </div>
+      <div className="lastSection">
+        <ContactUs />
+      </div>
 
       {/* FOOTER */}
       <footer
