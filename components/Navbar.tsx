@@ -187,7 +187,7 @@ export default function Navbar() {
       <Hero />
       <Services />
       <Testimonials />
-      {/* <Work /> */}
+      <Work />
       <ContactUs />
 
       {/* FOOTER */}
