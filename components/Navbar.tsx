@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import Services from "@/components/sections/Services";
 import Testimonials from "@/components/sections/Testimonials";
 import Work from "@/components/sections/Work";
@@ -12,7 +12,7 @@ import Hero from "@/components/sections/Hero";
 import ContactUs from "./sections/ContactUs";
 import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function Navbar() {
   const navRef = useRef<HTMLElement | null>(null);
