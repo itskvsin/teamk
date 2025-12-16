@@ -56,7 +56,7 @@ export default function Navbar() {
   return (
     <div className="min-h-screen">
       {/* NAVBAR */}
-      <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 px-8 py-4">
+      <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div ref={logoRef} className="origin-left object-contain ">
             <Image
@@ -64,7 +64,7 @@ export default function Navbar() {
               width={1000}
               height={1000}
               alt="logo"
-              className="h-30 w-30 object-contain"
+              className="h-26 w-26 object-contain"
             />
           </div>
 
