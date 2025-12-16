@@ -130,7 +130,7 @@ export default function Navbar() {
       {/* FOOTER */}
       <footer
         ref={footerRef}
-        className="min-h-screen w-full bg-[#f5f5f5] px-8 flex items-end justify-between py-20"
+        className="min-h-screen w-full bg-[#f5f5f5] px-8 flex items-end justify-between "
       >
         <div className="mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
