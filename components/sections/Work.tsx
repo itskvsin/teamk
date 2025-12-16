@@ -122,7 +122,7 @@ export default function Work() {
                 ref={(el) => {
                   containerRefs.current[index] = el;
                 }}
-                className="relative overflow-hidden rounded-2xl h-[600px] lg:h-[700] w-full md:w-4/12 shadow-2xl"
+                className="relative overflow-hidden rounded-2xl h-[600px] lg:h-[620] w-full md:w-4/12 shadow-2xl"
               >
                 {/* Video */}
                 <video
