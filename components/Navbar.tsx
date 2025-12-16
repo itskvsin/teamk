@@ -45,7 +45,7 @@ export default function Navbar() {
         start: "center top",
         end: "bottom",
         scrub: 1,
-        markers: true,
+        // markers: true,
       },
     });
 
