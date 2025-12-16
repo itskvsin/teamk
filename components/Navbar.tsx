@@ -31,96 +31,98 @@ export default function Navbar() {
       duration: 1.2,
       scrollTo: {
         y: target,
-        offsetY: 90, // navbar height
+        offsetY: 0, // navbar height
       },
-      ease: "power3.inOut",
+      ease: "power2.inOut",
     });
   };
 
-  useEffect(() => {
-    const nav = navRef.current;
-    const logo = logoRef.current;
-    const navLinks = navLinksRef.current;
-    const footer = footerRef.current;
+  
 
-    if (!nav || !logo || !navLinks || !footer) return;
+  // useEffect(() => {
+  //   const nav = navRef.current;
+  //   const logo = logoRef.current;
+  //   const navLinks = navLinksRef.current;
+  //   const footer = footerRef.current;
 
-    const mm = gsap.matchMedia();
+  //   if (!nav || !logo || !navLinks || !footer) return;
 
-    mm.add(
-      {
-        isDesktop: "(min-width: 768px)",
-        isMobile: "(max-width: 767px)",
-      },
-      (context) => {
-        const { isDesktop, isMobile } = context.conditions!;
+  //   const mm = gsap.matchMedia();
 
-        // ===========================
-        // DESKTOP
-        // ===========================
-        if (isDesktop) {
-          const tlScroll = gsap.timeline({
-            scrollTrigger: {
-              trigger: footer,
-              start: "top bottom",
-              end: "top 40%",
-              scrub: 1.2,
-            },
-          });
+  //   mm.add(
+  //     {
+  //       isDesktop: "(min-width: 768px)",
+  //       isMobile: "(max-width: 767px)",
+  //     },
+  //     (context) => {
+  //       const { isDesktop, isMobile } = context.conditions!;
 
-          tlScroll
-            .to(nav, { y: 120, ease: "power2.out" }, 0)
-            .to(navLinks, { opacity: 0, y: -30, duration: 0.4 }, 0);
+  //       // ===========================
+  //       // DESKTOP
+  //       // ===========================
+  //       if (isDesktop) {
+  //         const tlScroll = gsap.timeline({
+  //           scrollTrigger: {
+  //             trigger: footer,
+  //             start: "top bottom",
+  //             end: "top 40%",
+  //             scrub: 1.2,
+  //           },
+  //         });
 
-          const tlFinal = gsap.timeline({
-            scrollTrigger: {
-              trigger: footer,
-              start: "top 40%",
-              end: "top top",
-              scrub: 1.5,
-            },
-          });
+  //         tlScroll
+  //           .to(nav, { y: 120, ease: "power2.out" }, 0)
+  //           .to(navLinks, { opacity: 0, y: -30, duration: 0.4 }, 0);
 
-          tlFinal.to(logo, {
-            scale: 7,
-            x: -90,
-            y: 120,
-            ease: "power3.out",
-          });
+  //         const tlFinal = gsap.timeline({
+  //           scrollTrigger: {
+  //             trigger: footer,
+  //             start: "top 40%",
+  //             end: "top top",
+  //             scrub: 1.5,
+  //           },
+  //         });
 
-          return () => {
-            tlScroll.kill();
-            tlFinal.kill();
-          };
-        }
+  //         tlFinal.to(logo, {
+  //           scale: 7,
+  //           x: -90,
+  //           y: 120,
+  //           ease: "power3.out",
+  //         });
 
-        // ===========================
-        // MOBILE
-        // ===========================
-        if (isMobile) {
-          const tlMobile = gsap.timeline({
-            scrollTrigger: {
-              trigger: footer,
-              start: "top bottom",
-              end: "top 85%",
-              toggleActions: "play reverse play reverse",
-            },
-          });
+  //         return () => {
+  //           tlScroll.kill();
+  //           tlFinal.kill();
+  //         };
+  //       }
 
-          tlMobile
-            .to(nav, { y: 40, duration: 0.4, ease: "power2.out" }, 0)
-            .to(navLinks, { opacity: 0, y: -20, duration: 0.3 }, 0);
+  //       // ===========================
+  //       // MOBILE
+  //       // ===========================
+  //       if (isMobile) {
+  //         const tlMobile = gsap.timeline({
+  //           scrollTrigger: {
+  //             trigger: footer,
+  //             start: "top bottom",
+  //             end: "top 85%",
+  //             toggleActions: "play reverse play reverse",
+  //           },
+  //         });
 
-          return () => tlMobile.kill();
-        }
-      }
-    );
+  //         tlMobile
+  //           .to(nav, { y: 40, duration: 0.4, ease: "power2.out" }, 0)
+  //           .to(navLinks, { opacity: 0, y: -20, duration: 0.3 }, 0);
 
-    return () => {
-      mm.kill();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
-  }, []);
+  //         return () => tlMobile.kill();
+  //       }
+  //     }
+  //   );
+
+  //   return () => {
+  //     mm.kill();
+  //     ScrollTrigger.getAll().forEach((t) => t.kill());
+  //   };
+  // }, []);
 
   return (
     <div className="min-h-screen">
@@ -185,7 +187,7 @@ export default function Navbar() {
       <Hero />
       <Services />
       <Testimonials />
-      <Work />
+      {/* <Work /> */}
       <ContactUs />
 
       {/* FOOTER */}

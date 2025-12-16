@@ -34,7 +34,7 @@ export default function Hero(): JSX.Element {
     <div className="bg-black">
       <div
         id="home"
-        className="hero-container h-screen uppercase bg-[#f6f6f6] flex flex-col items-center justify-center font-extrabold  relative overflow-hidden md:px-0"
+        className="hero-container h-screen uppercase bg-[#f6f6f6] flex flex-col items-center justify-center font-extrabold  relative overflow-hidden"
       >
         <div className="relative z-10">
           <p className="hero-text text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-center mix-blend-difference px-4">
@@ -50,7 +50,7 @@ export default function Hero(): JSX.Element {
                   src="/images/joining_hands.png"
                   height={500}
                   width={500}
-                  className="h-50 w-50 sm:h-62 sm:w-62 md:h-64 md:w-64 lg:h-80 lg:w-80 object-contain rounded-xl"
+                  className="h-50 w-50 sm:h-62 sm:w-62 md:h-64 md:w-64 lg:h-76 lg:w-80 object-contain rounded-xl"
                   alt="thumbnail"
                 />
               </CardItem>

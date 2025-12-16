@@ -63,5 +63,38 @@ export default function Cursor() {
     };
   }, []);
 
-  return <div ref={cursorRef} className="cursor" />;
+      useEffect(() => {
+      const cursor = cursorRef.current;
+      const calWrapper = document.querySelector(".cal-wrapper");
+
+      if (!cursor || !calWrapper) return;
+
+      const disableCursor = () => {
+        gsap.to(cursor, {
+          opacity: 0,
+          scale: 0.5,
+          duration: 0.2,
+          ease: "power2.out",
+        });
+      };
+
+      const enableCursor = () => {
+        gsap.to(cursor, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.2,
+          ease: "power2.out",
+        });
+      };
+
+      calWrapper.addEventListener("mouseenter", disableCursor);
+      calWrapper.addEventListener("mouseleave", enableCursor);
+
+      return () => {
+        calWrapper.removeEventListener("mouseenter", disableCursor);
+        calWrapper.removeEventListener("mouseleave", enableCursor);
+      };
+    }, []);
+
+  return <div ref={cursorRef} className="cursor custom-cursor" />;
 }
