@@ -50,7 +50,7 @@ export default function Navbar() {
     });
 
 
-    t1.to(logoRef.current, {translateY: "46vh",scale: 6, duration: 1, ease: "power1.inOut"})
+    t1.to(logoRef.current, {translateY: "46vh",translateX: "-10vw",scale: 6, duration: 1, ease: "power1.inOut"})
 
   });
   return (
@@ -58,12 +58,13 @@ export default function Navbar() {
       {/* NAVBAR */}
       <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 px-8 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div ref={logoRef} className="origin-left">
+          <div ref={logoRef} className="origin-left object-contain ">
             <Image
-              src="/images/logo_no_bg.png"
-              width={100}
-              height={100}
+              src="/images/IAMK.png"
+              width={1000}
+              height={1000}
               alt="logo"
+              className="h-30 w-30 object-contain"
             />
           </div>
 
