@@ -16,13 +16,13 @@ export default function Home() {
   return (
     <>
       <SmoothScrollingWrapper>
-        {/* <PageLoader> */}
+        <PageLoader>
           <Navbar />
           {/* <Hero />
         <Services />
         <Testimonials />
         <Work /> */}
-        {/* </PageLoader> */}
+        </PageLoader>
       </SmoothScrollingWrapper>
     </>
   );
