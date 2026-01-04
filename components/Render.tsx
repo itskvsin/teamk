@@ -136,6 +136,12 @@ export default function PageLoader({
         animate={{ opacity: loading ? 0 : 1 }}
         transition={{ duration: 0.8 }}
         className="relative z-10"
+        onAnimationComplete={() => {
+          // Dispatch custom event when fade-in completes
+          if (!loading) {
+            window.dispatchEvent(new CustomEvent("loaderComplete"));
+          }
+        }}
       >
         {children}
       </motion.div>
